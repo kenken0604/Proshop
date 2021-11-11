@@ -2,10 +2,18 @@ main {
   min-height: 80vh;
 }
 
+.border-none {
+  border: none;
+}
+
 .rating {
   margin-right: 0.5rem;
 }
 
 .rating i {
   margin-right: 0.2rem;
+}
+
+.text-center {
+  text-align: center;
 }
