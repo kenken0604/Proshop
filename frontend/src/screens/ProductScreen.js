@@ -17,7 +17,7 @@ const ProductScreen = ({ match }) => {
       })
     }
     fetchData()
-  }, [])
+  }, [match])
 
   return (
     <div>
