@@ -10,6 +10,7 @@ router.get(
   '/',
   AsyncHandler(async (req, res) => {
     const products = await Product.find({})
+    // throw new Error('We have problems here...') //測試前端錯誤流程
     res.json(products)
   }),
 )

@@ -3,20 +3,37 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  PRODUCT_DETAIL_REQUEST,
+  PRODUCT_DETAIL_SUCCESS,
+  PRODUCT_DETAIL_FAIL,
 } from '../constants/productConstants'
 
-const initialState = { products: [] } //資料初始值
-
-export const productListReducer = (preState = initialState, action) => {
-  const { type, data } = action //傳入動作類型
+export const productListReducer = (state = { products: [] }, action) => {
+  const { type, payload } = action //傳入動作類型
   switch (type) {
     case PRODUCT_LIST_REQUEST:
       return { loading: true, products: [] }
     case PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: data }
+      return { loading: false, products: payload }
     case PRODUCT_LIST_FAIL:
-      return { loading: false, error: data }
+      return { loading: false, error: payload }
     default:
-      return preState
+      return state
+  }
+}
+
+const initialProductDetail = { product: {} }
+
+export const productDetailReducer = (state = initialProductDetail, action) => {
+  const { type, payload } = action //傳入動作類型
+  switch (type) {
+    case PRODUCT_DETAIL_REQUEST:
+      return { loading: true, product: {} }
+    case PRODUCT_DETAIL_SUCCESS:
+      return { loading: false, product: payload }
+    case PRODUCT_DETAIL_FAIL:
+      return { loading: false, error: payload }
+    default:
+      return state
   }
 }

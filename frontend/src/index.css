@@ -17,3 +17,30 @@ main {
 .text-center {
   text-align: center;
 }
+
+.cart-btn {
+  width: 100%;
+  margin: 20px auto 0 auto;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+h3 {
+  margin: 0;
+}
+
+.select {
+  outline: none;
+}
+
+.fl-right {
+  float: right;
+}
+
+.d-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
