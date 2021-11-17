@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import connectDB from './config/db.js'
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -10,12 +11,15 @@ connectDB() //需要放在dot.config()後面
 
 const app = express()
 
+app.use(express.json()) //允許json格式
+
 app.get('/', (req, res) => {
   res.send('API is running...')
 })
 
 //路由器
 app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 //錯誤控制
 app.use(notFound)

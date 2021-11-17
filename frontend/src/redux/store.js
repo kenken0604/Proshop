@@ -8,20 +8,28 @@ import {
 } from './reducers/productReducers'
 
 import { cartReducer } from './reducers/cartReducers'
+import { userLoginReducer } from './reducers/userReducers'
 
 //合併多個組件到store
 const allReducer = combineReducers({
   productList: productListReducer,
   productDetail: productDetailReducer,
   cart: cartReducer,
+  userLogin: userLoginReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : []
 
+const userInfoFromStorage = localStorage.getItem('userInfo')
+  ? JSON.parse(localStorage.getItem('userInfo'))
+  : null
+
 const initialState = {
+  //狀態是引入的reducer
   cart: { cartItems: cartItemsFromStorage },
+  userLogin: { userInfo: userInfoFromStorage },
 }
 
 const middleware = [thunk]
