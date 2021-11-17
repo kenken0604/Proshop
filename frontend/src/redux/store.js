@@ -8,7 +8,7 @@ import {
 } from './reducers/productReducers'
 
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer } from './reducers/userReducers'
+import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
 
 //合併多個組件到store
 const allReducer = combineReducers({
@@ -16,6 +16,7 @@ const allReducer = combineReducers({
   productDetail: productDetailReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
