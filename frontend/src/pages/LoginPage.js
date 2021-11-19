@@ -11,7 +11,7 @@ const LoginPage = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const redirect = location.search ? location.search.split('=')[1] : '/'
+  const redirect = location.search ? location.search.split('=')[1] : '/' //*
 
   const dispatch = useDispatch()
 
@@ -20,6 +20,7 @@ const LoginPage = ({ location, history }) => {
   useEffect(() => {
     if (userInfo) {
       history.push(redirect) //*
+      console.log(redirect)
     }
   }, [history, userInfo, redirect])
 

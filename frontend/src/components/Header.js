@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,8 +10,10 @@ const Header = () => {
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
+  const history = useHistory()
   const logoutHandler = () => {
     dispatch(logout())
+    history.push('/')
   }
 
   return (
@@ -38,7 +41,7 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <LinkContainer to="/signin">
+                <LinkContainer to="/login">
                   <Nav.Link>
                     <i className="fas fa-user"></i>Sign In
                   </Nav.Link>

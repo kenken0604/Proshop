@@ -1,56 +1,58 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import FormContainer from '../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { register } from '../redux/actions/userAction'
+import { update } from '../redux/actions/userAction'
 
-const RegisterPage = ({ location, history }) => {
+const ProfilePage = ({ history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
 
-  const redirect = location.search ? location.search.split('=')[1] : '/'
-
   const dispatch = useDispatch()
 
-  const { loading, userInfo, error } = useSelector(
-    (state) => state.userRegister,
-  )
+  // const { loading, user, error } = useSelector((state) => state.userDetails)
+
+  const { userInfo, loading, error } = useSelector((state) => state.userLogin)
 
   useEffect(() => {
-    if (userInfo) {
-      history.push(redirect) //*
+    if (!userInfo) {
+      history.push('/signin')
+    } else {
+      // if (!user.name) {
+      //   dispatch(getUserDetails('profile'))
+      // } else {
+      setName(userInfo.name)
+      setEmail(userInfo.email)
+      // }
     }
-  }, [history, userInfo, redirect])
+  }, [history, userInfo])
 
   const submitHandler = (e) => {
     e.preventDefault()
+
     if (password !== confirmPassword) {
       setMessage('Password do not match.')
     } else {
-      dispatch(register(name, email, password))
-      history.push('/signin')
+      dispatch(update({ id: userInfo._id, name, email, password }))
     }
   }
 
   return (
-    <FormContainer>
-      <h1>Sign Up</h1>
-      {message && <Message variant="danger">{message}</Message>}
-      {error && <Message variant="danger">{error}</Message>}
-      {loading ? (
-        <Loader />
-      ) : (
+    <Row>
+      <Col md={3}>
+        <h2>User Profile</h2>
+        {message && <Message variant="danger">{message}</Message>}
+        {error && <Message variant="danger">{error}</Message>}
+        {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name" className="my-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
-              type="text"
+              type="name"
               placeholder="Enter name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -84,18 +86,15 @@ const RegisterPage = ({ location, history }) => {
             ></Form.Control>
           </Form.Group>
           <Button type="submit" variant="primary">
-            Register
+            Update Info
           </Button>
         </Form>
-      )}
-
-      <Row className="py-3">
-        <Col>
-          Have an Account? <Link to="/signin">Login</Link>
-        </Col>
-      </Row>
-    </FormContainer>
+      </Col>
+      <Col md={9}>
+        <h2>My Order</h2>
+      </Col>
+    </Row>
   )
 }
 
-export default RegisterPage
+export default ProfilePage

@@ -86,3 +86,36 @@ export const getUserProfile = AsyncHandler(async (req, res) => {
     throw new Error('User not found.')
   }
 })
+
+// @func    Update user profile
+// @route   PUT /api/user/profile
+// @access  private
+export const updateUserProfile = AsyncHandler(async (req, res) => {
+  console.log(req.user) //可以得到middleware設定的
+  const user = await User.findById(req.user._id)
+
+  if (user) {
+    user.name = req.body.name //*
+    user.email = req.body.email
+    if (req.body.password) {
+      user.password = req.body.password
+    }
+    const updateUser = await user.save() //儲存資料
+
+    const tokenObject = { _id: updateUser._id } //必須為物件
+    const token = jwt.sign(tokenObject, process.env.JWT_SECRET, {
+      expiresIn: '30d',
+    })
+
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+      token: token, //攜帶token
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found.')
+  }
+})
