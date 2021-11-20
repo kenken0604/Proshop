@@ -40,10 +40,10 @@ export const addOrder = AsyncHandler(async (req, res) => {
 // @route   GET /api/orders/:id
 // @access  private
 export const getOrderByID = AsyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
-    'user',
-    'user email',
-  ) //*ID從前端的url串接 //拼接其他資料(必須要設定ref關聯式資料)
+  const order = await Order.findById(req.params.id).populate('user', [
+    'name',
+    'email',
+  ]) //*ID從前端的url串接 //拼接其他資料(必須要設定ref關聯式資料)
 
   if (order) {
     res.json(order)

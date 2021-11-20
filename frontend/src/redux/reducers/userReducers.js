@@ -46,16 +46,16 @@ export const userRegisterReducer = (state = {}, action) => {
   }
 }
 
-export const userDetailsReducer = (state = {}, action) => {
+//get request最好都要先放入初始狀態，好讓action按照指定容器放入
+export const userDetailsReducer = (state = { user: {} }, action) => {
   const { type, payload } = action
   switch (type) {
     case USER_DETAILS_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loading: true } //state要放出來
     case USER_DETAILS_SUCCESS:
       return { loading: false, user: payload }
     case USER_DETAILS_FAIL:
       return { loading: false, error: payload }
-
     default:
       return state
   }

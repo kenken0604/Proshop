@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { update } from '../redux/actions/userAction'
+import { update, getUserDetails } from '../redux/actions/userAction'
 
 const ProfilePage = ({ history }) => {
   const [name, setName] = useState('')
@@ -14,22 +14,22 @@ const ProfilePage = ({ history }) => {
 
   const dispatch = useDispatch()
 
-  // const { loading, user, error } = useSelector((state) => state.userDetails)
+  const { loading, user, error } = useSelector((state) => state.userDetails)
 
-  const { userInfo, loading, error } = useSelector((state) => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/signin')
     } else {
-      // if (!user.name) {
-      //   dispatch(getUserDetails('profile'))
-      // } else {
-      setName(userInfo.name)
-      setEmail(userInfo.email)
-      // }
+      if (!user.name) {
+        dispatch(getUserDetails('profile'))
+      } else {
+        setName(user.name)
+        setEmail(user.email)
+      }
     }
-  }, [history, userInfo])
+  }, [dispatch, history, userInfo, user]) //獲得user就會再渲染畫面
 
   const submitHandler = (e) => {
     e.preventDefault()
