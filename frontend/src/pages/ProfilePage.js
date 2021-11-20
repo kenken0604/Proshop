@@ -38,6 +38,7 @@ const ProfilePage = ({ history }) => {
       setMessage('Password do not match.')
     } else {
       dispatch(update({ id: userInfo._id, name, email, password }))
+      history.push('/login')
     }
   }
 

@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setPayment } from '../redux/actions/cartAction'
 
 const PaymentPage = ({ history }) => {
-  const { userAddress } = useSelector((state) => state.cart) //傳入reducer設定的資料
+  const { userAddress, paymentMethod } = useSelector((state) => state.cart) //傳入reducer設定的資料
 
   if (!userAddress) {
     history.push('/shipping')
   }
 
-  const [method, setMethod] = useState('Paypal')
+  const [method, setMethod] = useState(paymentMethod)
 
   const dispatch = useDispatch()
 
@@ -35,9 +35,9 @@ const PaymentPage = ({ history }) => {
               label="Paypal or Credit Card"
               id="Paypal"
               name="paymentmethod"
+              checked={method === 'Paypal'}
               value="Paypal"
-              checked
-              onChange={(e) => setPayment(e.target.value)}
+              onChange={(e) => setMethod(e.target.value)}
             ></Form.Check>
           </Col>
           <Col>
@@ -47,6 +47,7 @@ const PaymentPage = ({ history }) => {
               id="Stripe"
               name="paymentmethod"
               value="Stripe"
+              checked={method === 'Stripe'}
               onChange={(e) => setMethod(e.target.value)}
             ></Form.Check>
           </Col>
