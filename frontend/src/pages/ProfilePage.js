@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { update, getUserDetails } from '../redux/actions/userAction'
+import { update, getUserDetails, logout } from '../redux/actions/userAction'
+import { myOrderList } from '../redux/actions/orderAction'
 
 const ProfilePage = ({ history }) => {
   const [name, setName] = useState('')
@@ -18,18 +20,25 @@ const ProfilePage = ({ history }) => {
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
+  const { loadingList, orderItem, errorList } = useSelector(
+    (state) => state.listMyOrder,
+  )
+
+  // console.log(orderItem[1].orderItem[0])
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/signin')
     } else {
       if (!user.name) {
+        dispatch(myOrderList())
         dispatch(getUserDetails('profile'))
       } else {
         setName(user.name)
         setEmail(user.email)
       }
     }
-  }, [dispatch, history, userInfo, user]) //獲得user就會再渲染畫面
+  }, [dispatch, history, userInfo, user, orderItem]) //獲得user就會再渲染畫面
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -38,6 +47,7 @@ const ProfilePage = ({ history }) => {
       setMessage('Password do not match.')
     } else {
       dispatch(update({ id: userInfo._id, name, email, password }))
+      dispatch(logout())
       history.push('/login')
     }
   }
@@ -81,7 +91,7 @@ const ProfilePage = ({ history }) => {
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter to confirm Password"
+              placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
@@ -93,6 +103,54 @@ const ProfilePage = ({ history }) => {
       </Col>
       <Col md={9}>
         <h2>My Order</h2>
+        {loadingList ? (
+          <Loader />
+        ) : errorList ? (
+          <Message variant="danger">{errorList}</Message>
+        ) : (
+          <Table striped bordered hover responsive className="table-sm">
+            <thead className="text-center">
+              <tr>
+                <th>ORDER ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {orderItem.map((item) => (
+                <tr key={item._id}>
+                  <td>{item._id}</td>
+                  <td>{item.createdAt.slice(0, 10)}</td>
+                  <td>${item.totalPrice}</td>
+                  <td>
+                    {item.isPaid ? (
+                      item.paidAt.slice(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {item.isDelivered ? (
+                      item.deliverAt.slice(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${item._id}`}>
+                      <Button variant="dark" className="btn-sm">
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )

@@ -15,8 +15,10 @@ import {
   userUpdateReducer,
 } from './reducers/userReducers'
 import {
+  listMyOrderReducer,
   orderCreateReducer,
   orderDetailsReducer,
+  orderPayReducer,
 } from './reducers/orderReducer'
 
 //合併多個組件到store
@@ -30,6 +32,8 @@ const allReducer = combineReducers({
   userUpdate: userUpdateReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
+  listMyOrder: listMyOrderReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -46,7 +50,7 @@ const addressFromStorage = localStorage.getItem('address')
 
 const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
   ? localStorage.getItem('paymentMethod')
-  : {}
+  : 'Paypal'
 
 const initialState = {
   //狀態是引入的reducer

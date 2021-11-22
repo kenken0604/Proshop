@@ -5,6 +5,14 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_RESET,
+  ORDER_MYLIST_REQUEST,
+  ORDER_MYLIST_SUCCESS,
+  ORDER_MYLIST_FAIL,
+  ORDER_MYLIST_RESET,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -29,11 +37,43 @@ export const orderDetailsReducer = (
   const { type, payload } = action
   switch (type) {
     case ORDER_DETAILS_REQUEST:
-      return { ...state, loading: true } //*
+      return { ...state, loading: true } //*放入state讓初始狀態維持
     case ORDER_DETAILS_SUCCESS:
       return { loading: false, order: payload }
     case ORDER_DETAILS_FAIL:
       return { loading: false, error: payload }
+    default:
+      return state
+  }
+}
+
+export const orderPayReducer = (state = {}, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case ORDER_PAY_REQUEST:
+      return { loadingPay: true } //*不需要維持初始狀態
+    case ORDER_PAY_SUCCESS:
+      return { loadingPay: false, successPay: true } //不需要payload
+    case ORDER_PAY_FAIL:
+      return { loadingPay: false, errorPay: payload }
+    case ORDER_PAY_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const listMyOrderReducer = (state = { orderItem: [] }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case ORDER_MYLIST_REQUEST:
+      return { ...state, loadingList: true }
+    case ORDER_MYLIST_SUCCESS:
+      return { loadingList: false, orderItem: payload }
+    case ORDER_MYLIST_FAIL:
+      return { loadingList: false, errorList: payload }
+    case ORDER_MYLIST_RESET:
+      return { orderItem: [] }
     default:
       return state
   }

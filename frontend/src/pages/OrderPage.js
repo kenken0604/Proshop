@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderDetails } from '../redux/actions/orderAction'
+import { getOrderDetails, payOrder } from '../redux/actions/orderAction'
+import axios from 'axios'
+import { ORDER_PAY_RESET } from '../redux/constants/orderConstants'
 
 const OrderPage = ({ match }) => {
   const orderID = match.params.id
+
+  const [SDK, setSDK] = useState(false)
 
   const { order, loading, error } = useSelector((state) => state.orderDetails)
 
@@ -15,14 +20,42 @@ const OrderPage = ({ match }) => {
     .reduce((acc, item) => (acc += item.qty * item.price), 0)
     .toFixed(2)
 
+  const { loadingPay, successPay } = useSelector((state) => state.orderPay)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
-    //解決拿不到order的方案之一 //方案二是將reducer的狀態詳細指定
-    if (!order || order._id !== orderID) {
-      dispatch(getOrderDetails(orderID))
+    const addPaypalScript = async () => {
+      const { data: clientID } = await axios.get('/api/config/paypal')
+
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientID}`
+      script.async = true
+      script.onload = () => {
+        setSDK(true)
+      }
+      document.body.appendChild(script) //動態加載到文件頁面
     }
-  }, [orderID, order, dispatch])
+
+    //解決拿不到order的方案之一 //方案二是將reducer的狀態詳細指定
+    if (!order || order._id !== orderID || successPay) {
+      dispatch({ type: ORDER_PAY_RESET }) //*
+      dispatch(getOrderDetails(orderID))
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPaypalScript()
+      } else {
+        setSDK(true) //預防第二次結帳已經有script但是還沒有SDK
+      }
+    }
+  }, [orderID, order, dispatch, successPay])
+
+  //paymentResult是根據paypal-button得到的結果
+  const successPaymentHandler = (paymentResult) => {
+    console.log(paymentResult)
+    dispatch(payOrder(orderID, paymentResult))
+  }
 
   return loading ? (
     <Loader />
@@ -106,7 +139,7 @@ const OrderPage = ({ match }) => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="mb-3">
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <h4 className="text-center mb-0">Order Summary</h4>
@@ -137,6 +170,19 @@ const OrderPage = ({ match }) => {
               </ListGroup.Item>
             </ListGroup>
           </Card>
+          {!order.isPaid && (
+            <ListGroup>
+              {loadingPay && <Loader />}
+              {!SDK ? (
+                <Loader />
+              ) : (
+                <PayPalButton
+                  amount={order.totalPrice}
+                  onSuccess={successPaymentHandler}
+                />
+              )}
+            </ListGroup>
+          )}
         </Col>
       </Row>
     </div>

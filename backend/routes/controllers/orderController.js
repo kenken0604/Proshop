@@ -52,3 +52,37 @@ export const getOrderByID = AsyncHandler(async (req, res) => {
     throw new Error({ message: 'Order not found.' })
   }
 })
+
+// @func    update order to paid
+// @route   GET /api/orders/:id/pay
+// @access  private
+export const updateToPaid = AsyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    //設定資料庫資料
+    order.isPaid = true
+    order.paidAt = Date.now()
+    //資料來自paypal
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
+    }
+
+    const updateOrder = await order.save() //*
+    res.json(updateOrder)
+  } else {
+    res.status(404)
+    throw new Error({ message: 'Order not found.' })
+  }
+})
+
+// @func    get login user orders
+// @route   GET /api/orders/myorders
+// @access  private
+export const getMyOrder = AsyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id })
+  res.json(orders)
+})
