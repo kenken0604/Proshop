@@ -32,7 +32,7 @@ const ProfilePage = ({ history }) => {
     } else {
       if (!user.name) {
         dispatch(myOrderList())
-        dispatch(getUserDetails('profile'))
+        dispatch(getUserDetails('profile')) //傳入profile符合url，因之後有傳入id的需要
       } else {
         setName(user.name)
         setEmail(user.email)

@@ -46,9 +46,9 @@ const PlaceOrderPage = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      // eslint-disable-next-line
       history.push(`/order/${order._id}`) //_id是資料庫提供的ID
     }
+    // eslint-disable-next-line
   }, [history, success])
 
   return (

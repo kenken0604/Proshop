@@ -34,7 +34,7 @@ const RegisterPage = ({ location, history }) => {
       setMessage('Password do not match.')
     } else {
       dispatch(register(name, email, password))
-      history.push('/signin')
+      history.push('/login')
     }
   }
 
@@ -91,7 +91,10 @@ const RegisterPage = ({ location, history }) => {
 
       <Row className="py-3">
         <Col>
-          Have an Account? <Link to="/signin">Login</Link>
+          Have an Account?{' '}
+          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+            Login
+          </Link>
         </Col>
       </Row>
     </FormContainer>

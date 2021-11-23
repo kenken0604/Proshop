@@ -119,3 +119,61 @@ export const updateUserProfile = AsyncHandler(async (req, res) => {
     throw new Error('User not found.')
   }
 })
+
+// @func    get all users
+// @route   GET /api/user
+// @access  private/admin
+export const getAllUsers = AsyncHandler(async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
+})
+
+// @func    delete an user
+// @route   DELETE /api/users/:id
+// @access  private/admin
+export const deleteUser = AsyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  if (user) {
+    await user.remove()
+    res.json({ message: 'User removed' })
+  } else {
+    res.status(404)
+    throw new Error('User not found.')
+  }
+})
+
+// @func    get user by ID
+// @route   GET /api/users/:id
+// @access  private/admin
+export const getUserByID = AsyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password') //不需要密碼資料
+  if (user) {
+    res.json(user)
+  } else {
+    res.status(404)
+    throw new Error('User not found.')
+  }
+})
+
+// @func    update userInfo
+// @route   PUT /api/users/:id
+// @access  private/admin
+export const updateUser = AsyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  if (user) {
+    user.name = req.body.name
+    user.email = req.body.email
+    user.isAdmin = req.body.isAdmin
+    const updateInfo = await user.save()
+
+    res.json({
+      _id: updateInfo._id,
+      name: updateInfo.name,
+      email: updateInfo.email,
+      isAdmin: updateInfo.isAdmin,
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found.')
+  }
+})
