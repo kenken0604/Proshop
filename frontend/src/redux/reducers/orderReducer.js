@@ -16,6 +16,10 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_FAIL,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -60,6 +64,22 @@ export const orderPayReducer = (state = {}, action) => {
     case ORDER_PAY_FAIL:
       return { loadingPay: false, errorPay: payload }
     case ORDER_PAY_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const orderDeliverReducer = (state = {}, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case ORDER_DELIVER_REQUEST:
+      return { loadingDeliver: true } //*不需要維持初始狀態
+    case ORDER_DELIVER_SUCCESS:
+      return { loadingDeliver: false, successDeliver: true } //不需要payload
+    case ORDER_DELIVER_FAIL:
+      return { loadingDeliver: false, errorDeliver: payload }
+    case ORDER_DELIVER_RESET:
       return {}
     default:
       return state

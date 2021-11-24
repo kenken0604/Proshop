@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderDetails, payOrder } from '../redux/actions/orderAction'
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from '../redux/actions/orderAction'
 import axios from 'axios'
-import { ORDER_PAY_RESET } from '../redux/constants/orderConstants'
+import {
+  ORDER_PAY_RESET,
+  ORDER_DELIVER_RESET,
+} from '../redux/constants/orderConstants'
 
-const OrderPage = ({ match }) => {
+const OrderPage = ({ match, history }) => {
   const orderID = match.params.id
 
   const [SDK, setSDK] = useState(false)
 
-  const { order, loading, error } = useSelector((state) => state.orderDetails)
+  const dispatch = useDispatch()
 
+  const { order, loading, error } = useSelector((state) => state.orderDetails)
   const itemsPrice = order.orderItem
     .reduce((acc, item) => (acc += item.qty * item.price), 0)
     .toFixed(2)
 
+  const { userInfo } = useSelector((state) => state.userLogin)
   const { loadingPay, successPay } = useSelector((state) => state.orderPay)
-
-  const dispatch = useDispatch()
+  const { loadingDeliver, successDeliver } = useSelector(
+    (state) => state.orderDeliver,
+  )
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+
     const addPaypalScript = async () => {
       const { data: clientID } = await axios.get('/api/config/paypal')
 
@@ -39,8 +53,9 @@ const OrderPage = ({ match }) => {
     }
 
     //解決拿不到order的方案之一 //方案二是將reducer的狀態詳細指定
-    if (!order || order._id !== orderID || successPay) {
+    if (!order || order._id !== orderID || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET }) //*
+      dispatch({ type: ORDER_DELIVER_RESET }) //*
       dispatch(getOrderDetails(orderID))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -49,12 +64,16 @@ const OrderPage = ({ match }) => {
         setSDK(true) //預防第二次結帳已經有script但是還沒有SDK
       }
     }
-  }, [orderID, order, dispatch, successPay])
+  }, [orderID, order, dispatch, successPay, successDeliver])
 
   //paymentResult是根據paypal-button得到的結果
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(orderID, paymentResult))
+  }
+
+  const successDeliverHandler = () => {
+    dispatch(deliverOrder(orderID))
   }
 
   return loading ? (
@@ -87,7 +106,10 @@ const OrderPage = ({ match }) => {
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered ? (
-                <Message variant="success"> on {order.deliverAt}</Message>
+                <Message variant="success">
+                  {' '}
+                  Delivered on {order.deliveredAt}
+                </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
@@ -181,6 +203,18 @@ const OrderPage = ({ match }) => {
                   onSuccess={successPaymentHandler}
                 />
               )}
+            </ListGroup>
+          )}
+          {/* {loadingDeliver && <Loader />} */}
+          {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+            <ListGroup>
+              <Button
+                type="button"
+                className="btn btn-block"
+                onClick={successDeliverHandler}
+              >
+                Mark As Delivered
+              </Button>
             </ListGroup>
           )}
         </Col>
