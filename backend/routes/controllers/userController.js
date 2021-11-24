@@ -95,8 +95,8 @@ export const updateUserProfile = AsyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
 
   if (user) {
-    user.name = req.body.name //*
-    user.email = req.body.email
+    user.name = req.body.name || user.name //*如果沒有頁面資料就使用原來的資料
+    user.email = req.body.email || user.email
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -161,8 +161,8 @@ export const getUserByID = AsyncHandler(async (req, res) => {
 export const updateUser = AsyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
-    user.name = req.body.name
-    user.email = req.body.email
+    user.name = req.body.name || user.name //*如果沒有頁面資料就使用原來的資料
+    user.email = req.body.email || user.email
     user.isAdmin = req.body.isAdmin
     const updateInfo = await user.save()
 

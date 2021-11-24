@@ -24,14 +24,12 @@ const ProductPage = ({ history, match }) => {
 
   const dispatch = useDispatch()
 
-  const data = useSelector((state) => {
+  const { loading, product, error } = useSelector((state) => {
     return state.productDetail
   })
 
-  const { loading, product, error } = data
-
   useEffect(() => {
-    dispatch(detailProduct(match))
+    dispatch(detailProduct(match.params.id))
   }, [dispatch, match])
 
   const [quantity, setQuantity] = useState(1)
