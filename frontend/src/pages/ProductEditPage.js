@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
@@ -17,6 +18,8 @@ const ProductEditPage = ({ match }) => {
   const [rating, setRating] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
+
+  const [uploading, setUploading] = useState(false)
 
   const productID = match.params.id
 
@@ -71,6 +74,28 @@ const ProductEditPage = ({ match }) => {
     )
   }
 
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true) //讓loader作用
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+
+      const { data } = await axios.post('/api/upload', formData, config)
+      setImage(data) //設定axios返回的路徑為圖片
+      setUploading(false) //上傳完成就將loader關閉
+    } catch (error) {
+      console.log(error)
+      setUploading(false)
+    }
+  }
+
   return (
     <div>
       <Link to="/admin/productlist" className="btn btn-dark my-3">
@@ -109,6 +134,14 @@ const ProductEditPage = ({ match }) => {
               value={image}
               onChange={(e) => setImage(e.target.value)}
             ></Form.Control>
+            <Form.Group controlId="formFileSm" className="mb-3">
+              <Form.Control
+                type="file"
+                size="sm"
+                onChange={uploadFileHandler}
+              />
+            </Form.Group>
+            {uploading && <Loader />}
           </Form.Group>
 
           <Form.Group controlId="brand" className="mb-3">
