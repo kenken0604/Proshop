@@ -29,6 +29,7 @@ const UserListPage = ({ history }) => {
 
   return (
     <div>
+      <h2 className="mt-2">Users List</h2>
       {loading ? (
         <Loader />
       ) : error ? (

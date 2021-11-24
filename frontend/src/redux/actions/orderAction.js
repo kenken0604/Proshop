@@ -6,6 +6,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_LIST_FAIL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
   ORDER_MYLIST_FAIL,
   ORDER_MYLIST_REQUEST,
   ORDER_MYLIST_SUCCESS,
@@ -137,6 +140,37 @@ export const myOrderList = () => {
     } catch (error) {
       dispatch({
         type: ORDER_MYLIST_FAIL,
+        payload:
+          error.response && error.response.data.message //*測試值
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+}
+
+export const allOrdersList = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: ORDER_LIST_REQUEST })
+
+      const { token } = getState().userLogin.userInfo
+
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + token, //私密路由一定需要
+        },
+      }
+
+      const { data } = await axios.get(`/api/orders`, config)
+
+      dispatch({
+        type: ORDER_LIST_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: ORDER_LIST_FAIL,
         payload:
           error.response && error.response.data.message //*測試值
             ? error.response.data.message
