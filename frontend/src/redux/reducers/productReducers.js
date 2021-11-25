@@ -37,7 +37,10 @@ export const productListReducer = (state = { products: [] }, action) => {
   }
 }
 
-export const productDetailReducer = (state = { product: {} }, action) => {
+export const productDetailReducer = (
+  state = { loading: true, product: {} },
+  action,
+) => {
   const { type, payload } = action //傳入動作類型
   switch (type) {
     case PRODUCT_DETAIL_REQUEST:

@@ -4,6 +4,7 @@ import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/actions/userAction'
+import { USER_REGISTER_RESET } from '../redux/constants/userConstants'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -13,6 +14,7 @@ const Header = () => {
   const history = useHistory()
   const logoutHandler = () => {
     dispatch(logout())
+    dispatch({ type: USER_REGISTER_RESET }) //*解決無法重複註冊的問題
     history.push('/')
   }
 

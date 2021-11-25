@@ -15,6 +15,7 @@ import {
   USER_LOGOUT,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
+  USER_REGISTER_RESET,
   USER_REGISTER_SUCCESS,
   USER_UPDATE_ADMIN_FAIL,
   USER_UPDATE_ADMIN_REQUEST,
@@ -36,7 +37,7 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_FAIL:
       return { loading: false, error: payload }
     case USER_LOGOUT:
-      return {}
+      return { userInfo: null } //*
     default:
       return state
   }
@@ -51,7 +52,8 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: false, userInfo: payload }
     case USER_REGISTER_FAIL:
       return { loading: false, error: payload }
-
+    case USER_REGISTER_RESET:
+      return { userInfo: null } //*解決無法重複註冊的問題
     default:
       return state
   }
