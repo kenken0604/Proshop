@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 // import products from '../products' //改向服務器獲取資料
 // import axios from 'axios'
-import { detailProduct } from '../redux/actions/productAction'
+import { detailProduct, createReview } from '../redux/actions/productAction'
+import { REVIEW_CREATE_RESET } from '../redux/constants/productConstants'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -22,22 +23,41 @@ const ProductPage = ({ history, match }) => {
   //   fetchData()
   // }, [match])
 
+  const [quantity, setQuantity] = useState(1)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+
   const dispatch = useDispatch()
 
-  const { loading, product, error } = useSelector((state) => {
-    return state.productDetail
-  })
+  const { loading, product, error } = useSelector(
+    (state) => state.productDetail,
+  )
+
+  const { userInfo } = useSelector((state) => state.userLogin)
+  const { reviewLoading, reviewSuccess, reviewError } = useSelector(
+    (state) => state.reviewCreate,
+  )
 
   useEffect(() => {
     dispatch(detailProduct(match.params.id))
-  }, [dispatch, match])
+  }, [dispatch, match]) //默認就要渲染畫面
 
-  const [quantity, setQuantity] = useState(1)
+  useEffect(() => {
+    if (reviewSuccess) {
+      setRating(0)
+      setComment('')
+      dispatch(detailProduct(match.params.id))
+      dispatch({ type: REVIEW_CREATE_RESET }) //***讓reviewSuccess歸零
+    }
+  }, [dispatch, match, reviewSuccess])
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${quantity}`)
   }
-
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(createReview(match.params.id, { rating, comment }))
+  }
   return (
     <div>
       <Link className="btn btn-dark rounded" to="/">
@@ -110,6 +130,74 @@ const ProductPage = ({ history, match }) => {
           >
             ADD TO CART
           </Button>
+        </Col>
+      </Row>
+      <Row className="my-3">
+        <Col md={6}>
+          <h4>Reviews</h4>
+          {reviewLoading ? (
+            <Loader />
+          ) : (
+            product.reviews.length === 0 && (
+              <Message variant="warning">No review</Message>
+            )
+          )}
+          <ListGroup>
+            {reviewLoading ? (
+              <Loader />
+            ) : (
+              product.reviews.map((review) => (
+                <ListGroup.Item key={review._id}>
+                  <strong className="d-block m10">
+                    {review.name}{' '}
+                    <Rating value={review.rating} className="fl-right" />
+                  </strong>
+
+                  <p>{review.comment}</p>
+                  <b className="fl-right">{review.createdAt.slice(0, 10)}</b>
+                </ListGroup.Item>
+              ))
+            )}
+          </ListGroup>
+        </Col>
+        <Col md={6}>
+          <h4>write a customer review</h4>
+          {reviewError && <Message variant="danger">{reviewError}</Message>}
+          {userInfo ? (
+            <Form onSubmit={submitHandler}>
+              <Form.Group controlId="rating" className="m10">
+                <Form.Label as="h6">Rating</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option value="">Select...</option>
+                  <option value="1">1 - Poor</option>
+                  <option value="2">2 - Fair</option>
+                  <option value="3">3 - Good</option>
+                  <option value="4">4 - Great</option>
+                  <option value="5">5 - Excellent</option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="comment" className="m10">
+                <Form.Label as="h6">Comment</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  value={comment}
+                  placeholder="Make your comment here"
+                  onChange={(e) => setComment(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Button type="submit" variant="info">
+                Submit
+              </Button>
+            </Form>
+          ) : (
+            <Message>
+              Please <Link to="/login">Log in</Link> to write a review
+            </Message>
+          )}
         </Col>
       </Row>
     </div>

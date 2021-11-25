@@ -15,6 +15,9 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
+  REVIEW_CREATE_REQUEST,
+  REVIEW_CREATE_SUCCESS,
+  REVIEW_CREATE_FAIL,
 } from '../constants/productConstants'
 
 import axios from 'axios'
@@ -152,6 +155,37 @@ export const updateProduct = (id, updateInfo) => {
     } catch (error) {
       dispatch({
         type: PRODUCT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message //*測試值
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+}
+
+export const createReview = (id, review) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: REVIEW_CREATE_REQUEST })
+
+      const { token } = getState().userLogin.userInfo
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token, //私密路由一定需要
+        },
+      }
+
+      await axios.post(`/api/products/${id}/review`, review, config)
+
+      dispatch({
+        type: REVIEW_CREATE_SUCCESS,
+      })
+    } catch (error) {
+      dispatch({
+        type: REVIEW_CREATE_FAIL,
         payload:
           error.response && error.response.data.message //*測試值
             ? error.response.data.message

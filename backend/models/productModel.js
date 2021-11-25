@@ -15,6 +15,12 @@ const reviewSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    //*留言的人
+    user: {
+      type: mongoose.Schema.Types.ObjectId, //*
+      required: true,
+      ref: 'User',
+    },
   },
   {
     timestamps: true,

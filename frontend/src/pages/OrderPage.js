@@ -30,9 +30,7 @@ const OrderPage = ({ match, history }) => {
 
   const { userInfo } = useSelector((state) => state.userLogin)
   const { loadingPay, successPay } = useSelector((state) => state.orderPay)
-  const { loadingDeliver, successDeliver } = useSelector(
-    (state) => state.orderDeliver,
-  )
+  const { successDeliver } = useSelector((state) => state.orderDeliver)
 
   useEffect(() => {
     if (!userInfo) {
@@ -64,7 +62,8 @@ const OrderPage = ({ match, history }) => {
         setSDK(true) //預防第二次結帳已經有script但是還沒有SDK
       }
     }
-  }, [orderID, order, dispatch, successPay, successDeliver])
+    // eslint-disable-next-line
+  }, [orderID, order, dispatch, successPay, successDeliver, userInfo, history])
 
   //paymentResult是根據paypal-button得到的結果
   const successPaymentHandler = (paymentResult) => {

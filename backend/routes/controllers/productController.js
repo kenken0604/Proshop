@@ -83,10 +83,52 @@ const updateProduct = AsyncHandler(async (req, res) => {
   }
 })
 
+// @func    create reviews for product
+// @route   post /api/products/:id/reviews
+// @access  private
+const createProductReview = AsyncHandler(async (req, res) => {
+  const { rating, comment } = req.body
+  const product = await Product.findById(req.params.id)
+
+  if (product) {
+    //避免重複同一人評論
+    const alreadyReviewed = product.reviews.find(
+      (review) => review.user._id.toString() === req.user._id.toString(),
+    ) //*id要變成字串才能比較
+
+    if (alreadyReviewed) {
+      res.status(404)
+      throw new Error('Product already reviewed.')
+    }
+
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    }
+
+    product.reviews.push(review) //將review併入資料庫而不是覆蓋
+
+    //更新資料庫數據
+    product.numReviews = product.reviews.length
+    product.rating =
+      product.reviews.reduce((acc, review) => (acc += review.rating), 0) /
+      product.reviews.length
+
+    await product.save()
+    res.status(201).json({ message: 'Review added.' })
+  } else {
+    res.status(404)
+    throw new Error('Product not found.')
+  }
+})
+
 export {
   getProducts,
   getProductByID,
   deleteProduct,
   createProduct,
   updateProduct,
+  createProductReview,
 }

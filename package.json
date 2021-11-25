@@ -8,7 +8,7 @@
     "start": "node backend/server",
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\" --ignore client",
     "data:import": "node backend/seeder",
     "data:destory": "node backend/seeder -d"
   },
@@ -30,6 +30,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
     "multer": "^1.4.3",
     "react-paypal-button-v2": "^2.6.3",
     "react-redux": "^7.2.6",

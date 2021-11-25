@@ -17,6 +17,10 @@ import {
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_RESET,
+  REVIEW_CREATE_REQUEST,
+  REVIEW_CREATE_SUCCESS,
+  REVIEW_CREATE_FAIL,
+  REVIEW_CREATE_RESET,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -98,6 +102,22 @@ export const productUpdateReducer = (
       return { loading: false, updateError: payload }
     case PRODUCT_UPDATE_RESET:
       return { updateSuccess: false }
+    default:
+      return state
+  }
+}
+
+export const reviewCreateReducer = (state = {}, action) => {
+  const { type, payload } = action //傳入動作類型
+  switch (type) {
+    case REVIEW_CREATE_REQUEST:
+      return { reviewLoading: true }
+    case REVIEW_CREATE_SUCCESS:
+      return { reviewLoading: false, reviewSuccess: true }
+    case REVIEW_CREATE_FAIL:
+      return { reviewLoading: false, reviewError: payload }
+    case REVIEW_CREATE_RESET:
+      return {}
     default:
       return state
   }
