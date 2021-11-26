@@ -51,6 +51,11 @@ h3 {
 
 .fs-10 {
   font-size: 16px;
+  padding: 0 0.5rem;
+}
+
+.h-25 {
+  height: 30px !important;
 }
 
 /* carousel */

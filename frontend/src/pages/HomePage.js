@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 // import axios from 'axios' //目前頁面資料要交給redux處理
 // import products from '../products' //改向服務器獲取資料
 import Product from '../components/Product'
@@ -8,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import ProductCarousel from '../components/ProductCarousel'
+import Meta from '../components/MetaHelmet'
 
 const HomePage = ({ match }) => {
   // 資料改由redux處理
@@ -43,7 +45,14 @@ const HomePage = ({ match }) => {
 
   return (
     <div>
-      {!keyword && <ProductCarousel />}
+      <Meta />
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link to="/" className="btn btn-dark mb-3">
+          Go Back
+        </Link>
+      )}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

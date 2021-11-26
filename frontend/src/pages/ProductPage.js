@@ -9,6 +9,7 @@ import { REVIEW_CREATE_RESET } from '../redux/constants/productConstants'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/MetaHelmet'
 
 const ProductPage = ({ history, match }) => {
   // const [product, setProduct] = useState({})
@@ -70,6 +71,7 @@ const ProductPage = ({ history, match }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row className="my-3">
             <Col md={6}>
               <Image src={product.image} fluid />
@@ -160,7 +162,7 @@ const ProductPage = ({ history, match }) => {
               {reviewError && <Message variant="danger">{reviewError}</Message>}
               {userInfo ? (
                 <Form onSubmit={submitHandler}>
-                  <Form.Group controlId="rating" className="m10">
+                  <Form.Group controlId="rating" className="mb-3">
                     <Form.Label as="h6">Rating</Form.Label>
                     <Form.Control
                       as="select"
@@ -175,7 +177,7 @@ const ProductPage = ({ history, match }) => {
                       <option value="5">5 - Excellent</option>
                     </Form.Control>
                   </Form.Group>
-                  <Form.Group controlId="comment" className="m10">
+                  <Form.Group controlId="comment" className="mb-3">
                     <Form.Label as="h6">Comment</Form.Label>
                     <Form.Control
                       as="textarea"

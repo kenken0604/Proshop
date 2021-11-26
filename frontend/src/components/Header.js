@@ -27,12 +27,12 @@ const Header = () => {
           <LinkContainer to="/">
             <Navbar.Brand>Proshop</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Route render={({ history }) => <SearchBox history={history} />} />
+          {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
           <Navbar.Collapse
             id="basic-navbar-nav"
             className="d-flex justify-content-between"
           >
-            <Route render={({ history }) => <SearchBox history={history} />} />
             <Nav>
               <LinkContainer to="/cart">
                 <Nav.Link>

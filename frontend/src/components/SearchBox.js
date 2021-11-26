@@ -16,7 +16,7 @@ const SearchBox = ({ history }) => {
     <Form
       onSubmit={submitHandler}
       inline="true"
-      className="d-flex justify-content-between"
+      className="d-flex justify-content-between h-25"
     >
       <Form.Control
         type="text"
