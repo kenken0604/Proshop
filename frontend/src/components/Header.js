@@ -1,10 +1,12 @@
 import React from 'react'
+import { Route } from 'react-router-dom' //*將searchbox轉成路由組件
 import { useHistory } from 'react-router'
 import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/actions/userAction'
 import { USER_REGISTER_RESET } from '../redux/constants/userConstants'
+import SearchBox from './SearchBox'
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -26,8 +28,12 @@ const Header = () => {
             <Navbar.Brand>Proshop</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto">
+          <Navbar.Collapse
+            id="basic-navbar-nav"
+            className="d-flex justify-content-between"
+          >
+            <Route render={({ history }) => <SearchBox history={history} />} />
+            <Nav>
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart

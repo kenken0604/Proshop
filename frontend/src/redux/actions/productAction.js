@@ -22,12 +22,13 @@ import {
 
 import axios from 'axios'
 
-export const listProducts = () => {
+export const listProducts = (keyword = '') => {
+  //*讓keyword默認為''渲染畫面
   return async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST }) //增加loading過程
 
-      const { data } = await axios.get('/api/products')
+      const { data } = await axios.get(`/api/products?keyword=${keyword}`)
 
       dispatch({
         type: PRODUCT_LIST_SUCCESS,

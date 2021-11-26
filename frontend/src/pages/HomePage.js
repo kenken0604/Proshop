@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const HomePage = () => {
+const HomePage = ({ match }) => {
   // 資料改由redux處理
   // const [products, setProducts] = useState([])
   // useEffect(() => {
@@ -33,10 +33,12 @@ const HomePage = () => {
   })
   const { loading, products, error } = data
 
+  const keyword = match.params.keyword //是根據App.js設定的路由抓到keyword值
+
   //根據指令渲染頁面
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch]) //*派發指令改變就渲染頁面
+    dispatch(listProducts(keyword))
+  }, [dispatch, keyword]) //*派發指令改變就渲染頁面
 
   return (
     <div>

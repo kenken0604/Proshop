@@ -2,10 +2,21 @@ import AsyncHandler from 'express-async-handler'
 import Product from '../../models/productModel.js'
 
 // @func    fetch all products
-// @route   GET /api/products
+// @route   GET /api/product.../api/product?search=keyword
 // @access  public
 const getProducts = AsyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  //得到在路由傳送的關鍵字
+  const keyword = req.query.keyword
+    ? {
+        //*用product上的name對應
+        name: {
+          $regex: req.query.keyword, //表達式可以接受不精準的匹配
+          $options: 'i', //讓表達式不區分大小寫
+        },
+      }
+    : {} //沒有keyword就是空物件
+
+  const products = await Product.find({ ...keyword }) //*讓keyword可以根據資料變化
   // throw new Error('We have problems here...') //測試前端錯誤流程
   res.json(products)
 })
