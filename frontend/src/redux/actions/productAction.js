@@ -18,12 +18,15 @@ import {
   REVIEW_CREATE_REQUEST,
   REVIEW_CREATE_SUCCESS,
   REVIEW_CREATE_FAIL,
+  GET_TOPS_REQUEST,
+  GET_TOPS_SUCCESS,
+  GET_TOPS_FAIL,
 } from '../constants/productConstants'
 
 import axios from 'axios'
 
 export const listProducts = (keyword = '') => {
-  //*讓keyword默認為''渲染畫面
+  //*讓keyword默認為空字串渲染畫面
   return async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST }) //增加loading過程
@@ -187,6 +190,29 @@ export const createReview = (id, review) => {
     } catch (error) {
       dispatch({
         type: REVIEW_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message //*測試值
+            ? error.response.data.message
+            : error.message,
+      })
+    }
+  }
+}
+
+export const getTopProduct = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: GET_TOPS_REQUEST })
+
+      const { data } = await axios.get(`/api/products/top`)
+
+      dispatch({
+        type: GET_TOPS_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispatch({
+        type: GET_TOPS_FAIL,
         payload:
           error.response && error.response.data.message //*測試值
             ? error.response.data.message

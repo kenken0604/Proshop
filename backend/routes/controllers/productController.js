@@ -5,7 +5,7 @@ import Product from '../../models/productModel.js'
 // @route   GET /api/product.../api/product?search=keyword
 // @access  public
 const getProducts = AsyncHandler(async (req, res) => {
-  //得到在路由傳送的關鍵字
+  //透過query將關鍵字從前端傳到後端
   const keyword = req.query.keyword
     ? {
         //*用product上的name對應
@@ -135,6 +135,15 @@ const createProductReview = AsyncHandler(async (req, res) => {
   }
 })
 
+// @func    fetch top rated products
+// @route   GET /api/products/top
+// @access  public
+const getTopProduct = AsyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3) //-1代表由高到低
+
+  res.json(products)
+})
+
 export {
   getProducts,
   getProductByID,
@@ -142,4 +151,5 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
+  getTopProduct,
 }

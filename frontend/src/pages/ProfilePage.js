@@ -24,6 +24,8 @@ const ProfilePage = ({ history }) => {
     (state) => state.listMyOrder,
   )
 
+  console.log(orderItem)
+
   // console.log(orderItem[1].orderItem[0])
 
   useEffect(() => {
@@ -120,34 +122,44 @@ const ProfilePage = ({ history }) => {
               </tr>
             </thead>
             <tbody className="text-center">
-              {orderItem.map((item) => (
-                <tr key={item._id}>
-                  <td>{item._id}</td>
-                  <td>{item.createdAt.slice(0, 10)}</td>
-                  <td>${item.totalPrice}</td>
-                  <td>
-                    {item.isPaid ? (
-                      item.paidAt.slice(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {item.isDelivered ? (
-                      item.deliverAt.slice(0, 10)
-                    ) : (
-                      <i className="fas fa-times" style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${item._id}`}>
-                      <Button variant="dark" className="btn-sm">
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
-                </tr>
-              ))}
+              {loadingList ? (
+                <Loader />
+              ) : (
+                orderItem.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item._id}</td>
+                    <td>{item.createdAt.slice(1, 10)}</td>
+                    <td>${item.totalPrice}</td>
+                    <td>
+                      {item.isPaid ? (
+                        item.paidAt.slice(1, 10)
+                      ) : (
+                        <i
+                          className="fas fa-times"
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      {item.isDelivered ? (
+                        item.deliveredAt.slice(1, 10)
+                      ) : (
+                        <i
+                          className="fas fa-times"
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      <LinkContainer to={`/order/${item._id}`}>
+                        <Button variant="dark" className="btn-sm">
+                          Details
+                        </Button>
+                      </LinkContainer>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         )}

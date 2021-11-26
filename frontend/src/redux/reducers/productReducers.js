@@ -21,6 +21,9 @@ import {
   REVIEW_CREATE_SUCCESS,
   REVIEW_CREATE_FAIL,
   REVIEW_CREATE_RESET,
+  GET_TOPS_REQUEST,
+  GET_TOPS_SUCCESS,
+  GET_TOPS_FAIL,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -121,6 +124,20 @@ export const reviewCreateReducer = (state = {}, action) => {
       return { reviewLoading: false, reviewError: payload }
     case REVIEW_CREATE_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const getTopReducer = (state = { products: [] }, action) => {
+  const { type, payload } = action //傳入動作類型
+  switch (type) {
+    case GET_TOPS_REQUEST:
+      return { ...state, loading: true }
+    case GET_TOPS_SUCCESS:
+      return { loading: false, products: payload }
+    case GET_TOPS_FAIL:
+      return { loading: false, error: payload }
     default:
       return state
   }

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
+// import axios from 'axios' //目前頁面資料要交給redux處理
 // import products from '../products' //改向服務器獲取資料
 import Product from '../components/Product'
-// import axios from 'axios' //目前頁面資料要交給redux處理
 import { listProducts } from '../redux/actions/productAction'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import ProductCarousel from '../components/ProductCarousel'
 
 const HomePage = ({ match }) => {
   // 資料改由redux處理
@@ -38,10 +39,11 @@ const HomePage = ({ match }) => {
   //根據指令渲染頁面
   useEffect(() => {
     dispatch(listProducts(keyword))
-  }, [dispatch, keyword]) //*派發指令改變就渲染頁面
+  }, [dispatch, keyword]) //*派發指令或關鍵字改變就渲染頁面
 
   return (
     <div>
+      {!keyword && <ProductCarousel />}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

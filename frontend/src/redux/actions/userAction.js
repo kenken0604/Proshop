@@ -125,7 +125,7 @@ export const getUserDetails = (id) => {
 
       const { data } = await axios.get(`/api/users/${id}`, config) //*id不能改成profile，因為有action需要傳入id使用
 
-      console.log(data)
+      // console.log(data)
       dispatch({
         type: USER_DETAILS_SUCCESS,
         payload: data,
