@@ -4919,6 +4919,9 @@ input[type='button'].btn-block {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(26, 26, 26, 0.25);
   box-shadow: 0 0 0 0.2rem rgba(26, 26, 26, 0.25);
 }
+.page-item {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
 .page-item:first-child .page-link {
   margin-left: 0;
 }

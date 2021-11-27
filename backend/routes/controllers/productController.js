@@ -5,6 +5,10 @@ import Product from '../../models/productModel.js'
 // @route   GET /api/product.../api/product?search=keyword
 // @access  public
 const getProducts = AsyncHandler(async (req, res) => {
+  //以參數設定指令要顯示多少資料
+  const pageSize = 4
+  const page = Number(req.query.pageNumber) || 1
+
   //透過query將關鍵字從前端傳到後端
   const keyword = req.query.keyword
     ? {
@@ -16,9 +20,13 @@ const getProducts = AsyncHandler(async (req, res) => {
       }
     : {} //沒有keyword就是空物件
 
-  const products = await Product.find({ ...keyword }) //*讓keyword可以根據資料變化
+  const count = await Product.countDocuments({ ...keyword }) //獲取項目數
+  const products = await Product.find({ ...keyword }) //擴展符讓keyword可以根據資料變化
+    .limit(pageSize) //limit限制顯示項目數
+    .skip(pageSize * (page - 1)) //skip每次跳過多少項目
+
   // throw new Error('We have problems here...') //測試前端錯誤流程
-  res.json(products)
+  res.json({ products, page, pages: Math.ceil(count / pageSize) }) //pages代表共有幾頁，因此用ceil無條件進位
 })
 
 // @func    fetch single product

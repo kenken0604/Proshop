@@ -25,13 +25,14 @@ import {
 
 import axios from 'axios'
 
-export const listProducts = (keyword = '') => {
-  //*讓keyword默認為空字串渲染畫面
+export const listProducts = (keyword, pageNumber) => {
   return async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST }) //增加loading過程
 
-      const { data } = await axios.get(`/api/products?keyword=${keyword}`)
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`, //與後端溝通的api
+      )
 
       dispatch({
         type: PRODUCT_LIST_SUCCESS,

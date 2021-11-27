@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import ProductCarousel from '../components/ProductCarousel'
+import Paginate from '../components/Paginate'
 import Meta from '../components/MetaHelmet'
 
 const HomePage = ({ match }) => {
@@ -34,14 +35,15 @@ const HomePage = ({ match }) => {
     // console.log(state)
     return state.productList //productList就是在store設定的reducer指令
   })
-  const { loading, products, error } = data
+  const { loading, products, error, page, pages } = data
 
-  const keyword = match.params.keyword //是根據App.js設定的路由抓到keyword值
+  const keyword = match.params.keyword || '' //是根據App.js設定的路由抓到keyword值
+  const pageNumber = match.params.pageNumber || 1
 
   //根據指令渲染頁面
   useEffect(() => {
-    dispatch(listProducts(keyword))
-  }, [dispatch, keyword]) //*派發指令或關鍵字改變就渲染頁面
+    dispatch(listProducts(keyword, pageNumber))
+  }, [dispatch, keyword, pageNumber]) //*派發指令或關鍵字改變就渲染頁面
 
   return (
     <div>
@@ -59,13 +61,16 @@ const HomePage = ({ match }) => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paginate page={page} pages={pages} keyword={keyword} />
+        </>
       )}
     </div>
   )
