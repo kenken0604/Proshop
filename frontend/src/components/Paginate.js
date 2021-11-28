@@ -2,7 +2,7 @@ import React from 'react'
 import { Pagination } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-const Paginate = ({ pages, page, keyword, isAdmin }) => {
+const Paginate = ({ pages, page, keyword, users, products }) => {
   //傳入關鍵字變數讓link使用對應的路由
   return (
     <Pagination>
@@ -10,8 +10,10 @@ const Paginate = ({ pages, page, keyword, isAdmin }) => {
         <LinkContainer
           key={x + 1}
           to={
-            isAdmin
+            products
               ? `/admin/productlist/${x + 1}`
+              : users
+              ? `/admin/userlist/${x + 1}`
               : keyword
               ? `/search/${keyword}/page/${x + 1}`
               : `/page/${x + 1}`

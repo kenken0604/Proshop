@@ -34,7 +34,11 @@ const App = () => {
           <Route path="/payment" component={PaymentPage} />
           <Route path="/placeorder" component={PlaceOrderPage} />
           <Route path="/order/:id" component={OrderPage} />
-          <Route path="/admin/userlist" component={UserListPage} />
+          <Route
+            path="/admin/userlist/:pageNumber?"
+            component={UserListPage}
+            exact
+          />
           <Route path="/admin/user/:id/edit" component={UserEditPage} />
           <Route
             path="/admin/productlist/:pageNumber?"

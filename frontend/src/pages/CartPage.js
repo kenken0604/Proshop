@@ -19,7 +19,9 @@ const CartPage = ({ match, location, history }) => {
   })
 
   useEffect(() => {
-    dispatch(addToCart(productID, qty))
+    if (productID) {
+      dispatch(addToCart(productID, qty))
+    }
   }, [dispatch, productID, qty])
 
   const removeItemHandler = (id) => {
@@ -105,7 +107,11 @@ const CartPage = ({ match, location, history }) => {
                 .reduce((acc, item) => (acc += item.price * item.qty), 0)
                 .toFixed(2)}
             </ListGroup.Item>
-            <Button onClick={checkoutHandler} className="cart-btn">
+            <Button
+              onClick={checkoutHandler}
+              className="cart-btn"
+              variant="danger"
+            >
               CHECKOUT
             </Button>
           </Col>

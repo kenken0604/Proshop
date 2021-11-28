@@ -180,7 +180,7 @@ export const update = (updateInfo) => {
   }
 }
 
-export const getAllUsers = () => {
+export const getAllUsers = (pageNumber) => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -195,7 +195,10 @@ export const getAllUsers = () => {
         },
       }
 
-      const { data } = await axios.get('/api/users', config)
+      const { data } = await axios.get(
+        `/api/users?pageNumber=${pageNumber}`,
+        config,
+      )
 
       dispatch({
         type: USER_LIST_SUCCESS,
