@@ -17,15 +17,12 @@ connectDB() //需要放在dot.config()後面
 
 const app = express()
 
+//開發模式
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
 app.use(express.json()) //允許json格式
-
-app.get('/', (req, res) => {
-  res.send('API is running...')
-})
 
 //路由器
 app.use('/api/products', productRoutes)
@@ -41,6 +38,19 @@ app.get('/api/config/paypal', (req, res) => {
 //讓瀏覽器讀取uploads資料夾->使此路徑成為靜態資料(因為此資料夾默認為不可瀏覽)
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+
+//生產模式
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')),
+  )
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...')
+  })
+}
 
 //錯誤控制
 app.use(notFound)
