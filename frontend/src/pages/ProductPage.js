@@ -148,7 +148,7 @@ const ProductPage = ({ history, match }) => {
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
                     <strong className="d-block m10">
-                      {review.name}{' '}
+                      <b>{review.name} </b>
                       <Rating value={review.rating} className="fl-right" />
                     </strong>
 

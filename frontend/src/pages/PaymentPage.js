@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button, Col } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import Breadcrumb from '../components/Breadcrumb'
@@ -8,9 +8,11 @@ import { setPayment } from '../redux/actions/cartAction'
 const PaymentPage = ({ history }) => {
   const { userAddress, paymentMethod } = useSelector((state) => state.cart) //傳入reducer設定的資料
 
-  if (!userAddress) {
-    history.push('/shipping')
-  }
+  useEffect(() => {
+    if (!userAddress.address) {
+      history.push('/shipping')
+    }
+  }, [userAddress, history])
 
   const [method, setMethod] = useState(paymentMethod)
 

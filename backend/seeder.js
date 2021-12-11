@@ -58,6 +58,8 @@ const destoryData = async () => {
 }
 
 //node流程控制
+//如果在終端收到的指令的index為node backend/seeder -d
+//意即索引[2]為-d
 if (process.argv[2] === '-d') {
   destoryData()
 } else {

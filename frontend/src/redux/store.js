@@ -56,6 +56,7 @@ const allReducer = combineReducers({
   getTop: getTopReducer,
 })
 
+//取得初本地儲存的狀態
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : []
@@ -72,6 +73,7 @@ const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
   ? localStorage.getItem('paymentMethod')
   : 'Paypal'
 
+//初始狀態
 const initialState = {
   //狀態是引入的reducer
   cart: {

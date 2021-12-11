@@ -16,6 +16,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
   USER_REGISTER_FAIL,
+  USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_UPDATE_ADMIN_FAIL,
   USER_UPDATE_ADMIN_REQUEST,
@@ -75,7 +76,7 @@ export const logout = () => {
 export const register = (name, email, password) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: USER_REGISTER_SUCCESS })
+      dispatch({ type: USER_REGISTER_REQUEST })
 
       const config = {
         headers: {
