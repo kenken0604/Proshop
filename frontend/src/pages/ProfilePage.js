@@ -24,8 +24,6 @@ const ProfilePage = ({ history }) => {
     (state) => state.listMyOrder,
   )
 
-  console.log(orderItem)
-
   // console.log(orderItem[1].orderItem[0])
 
   useEffect(() => {
