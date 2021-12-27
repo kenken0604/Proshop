@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node backend/server",
-    "server": "nodemon backend/server",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "craco node backend/server",
+    "server": "craco nodemon backend/server",
+    "client": "craco npm start --prefix frontend",
+    "dev": "craco concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destory": "node backend/seeder -d",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/kenken0604/Proshop#readme",
   "dependencies": {
+    "@craco/craco": "^6.4.3",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^10.0.0",
@@ -44,11 +45,5 @@
   "devDependencies": {
     "concurrently": "^6.3.0",
     "nodemon": "^2.0.15"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "jsx-a11y/anchor-is-valid": "off"
-    }
   }
 }
