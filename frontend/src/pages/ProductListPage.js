@@ -10,7 +10,7 @@ import {
   listProducts,
 } from '../redux/actions/productAction'
 import Paginate from '../components/Paginate'
-// import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
+import { PRODUCT_CREATE_RESET } from '../redux/constants/productConstants'
 
 const ProductListPage = ({ history, match }) => {
   const dispatch = useDispatch()
@@ -35,13 +35,13 @@ const ProductListPage = ({ history, match }) => {
   const pageNumber = match.params.pageNumber
 
   useEffect(() => {
-    // dispatch({ type: PRODUCT_CREATE_RESET })
-    if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`) //*無法跳轉路由
+    if (createdProduct) {
+      history.push(`/admin/product/${createdProduct._id}/edit`)
+      dispatch({ type: PRODUCT_CREATE_RESET })
     } else {
       dispatch(listProducts('', pageNumber))
     }
-  }, [dispatch, history, successCreate, createdProduct, pageNumber])
+  }, [dispatch, history, createdProduct, pageNumber])
 
   useEffect(() => {
     dispatch(listProducts('', pageNumber))
@@ -59,7 +59,7 @@ const ProductListPage = ({ history, match }) => {
 
   return (
     <div>
-      <Row>
+      <Row className="mt-5 mb-3">
         <Col>
           <h2 className="mt-2">Products</h2>
         </Col>
@@ -96,13 +96,13 @@ const ProductListPage = ({ history, match }) => {
                   <td>{product.brand}</td>
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="outline-info" className="btn-sm ml-2">
+                      <Button variant="info" className="btn-sm rounded">
                         <i className="fas fa-edit"></i>
                       </Button>
                     </LinkContainer>
                     <Button
-                      variant="outline-danger"
-                      className="btn-sm ml-2"
+                      variant="danger"
+                      className="btn-sm rounded mt-2 mt-lg-0 ml-0 ml-lg-2"
                       onClick={() => deleteHandler(product._id)}
                     >
                       <i className="fas fa-trash"></i>

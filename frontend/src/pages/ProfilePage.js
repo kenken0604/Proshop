@@ -20,25 +20,18 @@ const ProfilePage = ({ history }) => {
 
   const { userInfo } = useSelector((state) => state.userLogin)
 
-  const { loadingList, orderItem, errorList } = useSelector(
-    (state) => state.listMyOrder,
-  )
-
-  // console.log(orderItem[1].orderItem[0])
-
   useEffect(() => {
     if (!userInfo) {
       history.push('/signin')
     } else {
       if (!user.name) {
-        dispatch(myOrderList())
         dispatch(getUserDetails('profile')) //傳入profile符合url，因之後有傳入id的需要
       } else {
         setName(user.name)
         setEmail(user.email)
       }
     }
-  }, [dispatch, history, userInfo, user, orderItem]) //獲得user就會再渲染畫面
+  }, [dispatch, userInfo, user]) //獲得user就會再渲染畫面
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -54,8 +47,8 @@ const ProfilePage = ({ history }) => {
 
   return (
     <Row>
-      <Col md={3}>
-        <h2>User Profile</h2>
+      <Col xs={8} md={6} lg={4} className="mx-auto mb-5">
+        <h2 className="my-5">User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
@@ -96,71 +89,10 @@ const ProfilePage = ({ history }) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Button type="submit" variant="primary">
+          <Button type="submit" className="btn-success float-right rounded">
             Update Info
           </Button>
         </Form>
-      </Col>
-      <Col md={9}>
-        <h2>My Order</h2>
-        {loadingList ? (
-          <Loader />
-        ) : errorList ? (
-          <Message variant="danger">{errorList}</Message>
-        ) : (
-          <Table striped bordered hover responsive className="table-sm">
-            <thead className="text-center">
-              <tr>
-                <th>ORDER ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {loadingList ? (
-                <Loader />
-              ) : (
-                orderItem.map((item) => (
-                  <tr key={item._id}>
-                    <td>{item._id}</td>
-                    <td>{item.createdAt.slice(1, 10)}</td>
-                    <td>${item.totalPrice}</td>
-                    <td>
-                      {item.isPaid ? (
-                        item.paidAt.slice(1, 10)
-                      ) : (
-                        <i
-                          className="fas fa-times"
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
-                      {item.isDelivered ? (
-                        item.deliveredAt.slice(1, 10)
-                      ) : (
-                        <i
-                          className="fas fa-times"
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-                    <td>
-                      <LinkContainer to={`/order/${item._id}`}>
-                        <Button variant="dark" className="btn-sm">
-                          Details
-                        </Button>
-                      </LinkContainer>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </Table>
-        )}
       </Col>
     </Row>
   )

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom'
 import Breadcrumb from '../components/Breadcrumb'
 import Message from '../components/Message'
@@ -53,12 +54,15 @@ const PlaceOrderPage = ({ history }) => {
 
   return (
     <div>
-      <Breadcrumb step1 step2 step3 step4 />
+      <div className="my-4">
+        <Breadcrumb step1 step2 step3 step4 />
+      </div>
       {loading ? (
         <Loader />
       ) : (
         <Row>
           <Col md={8}>
+            <h1>Order Details</h1>
             <ListGroup variant="flush">
               <ListGroup.Item>
                 <h4>Shipping</h4>
@@ -87,15 +91,15 @@ const PlaceOrderPage = ({ history }) => {
                     {cartItems.map((item, index) => (
                       <ListGroup.Item key={index}>
                         <Row className="d-flex align-items-center">
-                          <Col md={2}>
+                          <Col xs={4} md={3} className="mt-3 mt-md-0">
                             <Image src={item.image} fluid rounded />
                           </Col>
-                          <Col md={5}>
+                          <Col xs={8} md={5} className="mt-3 mt-md-0">
                             <Link to={`/product/${item.productID}`}>
                               {item.name}
                             </Link>
                           </Col>
-                          <Col md={5}>
+                          <Col xs={12} md={4} className="mt-3 mt-md-0">
                             <p className="mb-0">
                               ${item.price} x {item.qty} = $
                               {(item.price * item.qty).toFixed(2)}
@@ -109,48 +113,49 @@ const PlaceOrderPage = ({ history }) => {
               </ListGroup.Item>
             </ListGroup>
           </Col>
-          <Col md={4}>
-            <Card>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <h4 className="text-center mb-0">Order Summary</h4>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
+          <Col xs={8} md={4} className="mx-auto mb-5">
+            <Table striped bordered hover className="mt-5 mt-md-0">
+              <thead>
+                <tr>
+                  <th>
+                    <h4 className="text-center mb-0">Summary</h4>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <Row className="px-4 py-3">
                     <Col>Items</Col>
                     <Col>${itemsPrice}</Col>
                   </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
+                </tr>
+                <tr>
+                  <Row className="px-4 py-3">
                     <Col>Shipping</Col>
                     <Col>${shippingPrice}</Col>
                   </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
+                </tr>
+                <tr>
+                  <Row className="px-4 py-3">
                     <Col>Tax</Col>
                     <Col>${tax}</Col>
                   </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
+                </tr>
+                <tr>
+                  <Row className="px-4 py-3">
                     <Col>Total</Col>
                     <Col>${total}</Col>
                   </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item>
-                  <Button
-                    className="btn-block"
-                    disabled={cartItems === 0}
-                    onClick={placeOrderHandler}
-                  >
-                    Place Order
-                  </Button>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card>
+                </tr>
+              </tbody>
+            </Table>
+            <Button
+              className="btn-block btn-warning"
+              disabled={cartItems === 0}
+              onClick={placeOrderHandler}
+            >
+              Place Order
+            </Button>
             {error && <Message variant="danger">{error}</Message>}
           </Col>
         </Row>

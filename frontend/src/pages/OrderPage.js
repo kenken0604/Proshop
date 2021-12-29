@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Row, Col, ListGroup, Image, Button } from 'react-bootstrap'
+import Table from 'react-bootstrap/Table'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
@@ -16,7 +18,8 @@ import {
   ORDER_DELIVER_RESET,
 } from '../redux/constants/orderConstants'
 
-const OrderPage = ({ match, history }) => {
+const OrderPage = ({ match }) => {
+  const history = useHistory()
   const orderID = match.params.id
 
   const [SDK, setSDK] = useState(false)
@@ -80,26 +83,31 @@ const OrderPage = ({ match, history }) => {
   ) : error ? (
     <Message variant="danger">{error}</Message>
   ) : (
-    <div>
-      <h3 className="mb-3">
-        Order <u>{order._id}</u>
-      </h3>
+    <div className="mt-3 mb-5">
+      <button
+        onClick={() => history.goBack()}
+        className="btn btn-dark rounded mb-5"
+      >
+        Go Back
+      </button>
       <Row>
         <Col md={8}>
+          <h3>Order ID:</h3>
+          <h5 className="mb-3 text-truncate">#{order._id}</h5>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h4>Shipping</h4>
               <p>
-                <span>Name:</span>
+                <span>Name: </span>
                 {order.user.name}
               </p>
               <p>
-                <span>Email:</span>
+                <span>Email: </span>
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
 
               <p>
-                <b>Address:</b>
+                <b>Address: </b>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
@@ -137,16 +145,16 @@ const OrderPage = ({ match, history }) => {
                   {order.orderItem.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row className="d-flex align-items-center">
-                        <Col md={2}>
+                        <Col xs={4} md={3}>
                           <Image src={item.image} fluid rounded />
                         </Col>
-                        <Col md={5}>
+                        <Col xs={8} md={5}>
                           <Link to={`/product/${item.productID}`}>
                             {item.name}
                           </Link>
                         </Col>
-                        <Col md={5}>
-                          <p className="mb-0">
+                        <Col xs={12} md={4}>
+                          <p className="mb-0 mt-3 mt-md-0">
                             ${item.price} x {item.qty} = $
                             {(item.price * item.qty).toFixed(2)}
                           </p>
@@ -159,38 +167,43 @@ const OrderPage = ({ match, history }) => {
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col md={4}>
-          <Card className="mb-3">
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h4 className="text-center mb-0">Order Summary</h4>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+        <Col xs={8} md={4} className="mx-auto">
+          <Table striped bordered hover className="mt-5 mt-md-0">
+            <thead>
+              <tr>
+                <th>
+                  <h4 className="mb-0 text-center">Order Summary</h4>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <Row className="px-4 py-3">
                   <Col>Items</Col>
                   <Col>${itemsPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              </tr>
+              <tr>
+                <Row className="px-4 py-3">
                   <Col>Shipping</Col>
                   <Col>${order.shippingPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              </tr>
+              <tr>
+                <Row className="px-4 py-3">
                   <Col>Tax</Col>
                   <Col>${order.taxPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
+              </tr>
+              <tr>
+                <Row className="px-4 py-3">
                   <Col>Total</Col>
                   <Col>${order.totalPrice}</Col>
                 </Row>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card>
+              </tr>
+            </tbody>
+          </Table>
+
           {!order.isPaid && (
             <ListGroup>
               {loadingPay && <Loader />}
@@ -209,7 +222,8 @@ const OrderPage = ({ match, history }) => {
             <ListGroup>
               <Button
                 type="button"
-                className="btn btn-block"
+                className="cart-btn btn-block rounded"
+                variant="warning"
                 onClick={successDeliverHandler}
               >
                 Mark As Delivered

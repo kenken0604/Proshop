@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Button, Image } from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../redux/actions/cartAction'
@@ -34,7 +35,7 @@ const CartPage = ({ match, location, history }) => {
 
   return (
     <Row>
-      <Col md={12}>
+      <Col md={12} className="my-4">
         <h1>Shopping Cart</h1>
       </Col>
       <Col>
@@ -49,16 +50,20 @@ const CartPage = ({ match, location, history }) => {
                 {cartItems.map((item) => (
                   <ListGroup.Item key={item.productID}>
                     <Row className="d-center">
-                      <Col md={3}>
+                      <Col xs={4} md={3}>
                         <Image src={item.image} fluid />
                       </Col>
-                      <Col md={3}>
-                        <Link to={`/product/${item.productID}`}>
-                          {item.name}
-                        </Link>
+                      <Col xs={8} md={3}>
+                        <div style={{ overflow: 'hidden' }}>
+                          <Link to={`/product/${item.productID}`}>
+                            {item.name}
+                          </Link>
+                        </div>
                       </Col>
-                      <Col md={2}>${item.price}</Col>
-                      <Col md={2}>
+                      <Col xs={4} md={2} className="mt-3 mt-md-0 text-center">
+                        ${item.price}
+                      </Col>
+                      <Col xs={4} md={2} className="mt-3 mt-md-0">
                         <select
                           value={item.qty}
                           onChange={(e) => {
@@ -75,9 +80,9 @@ const CartPage = ({ match, location, history }) => {
                           ))}
                         </select>
                       </Col>
-                      <Col>
+                      <Col xs={4} md={2} className="mt-3 mt-md-0">
                         <Button
-                          variant="light"
+                          className="btn btn-danger btn-sm float-right rounded"
                           onClick={() => {
                             removeItemHandler(item.productID)
                           }}
@@ -91,29 +96,46 @@ const CartPage = ({ match, location, history }) => {
               </ListGroup>
             )}
           </Col>
-          <Col md={4} className="text-center">
-            <ListGroup.Item>
-              <h3>Amount of Items</h3>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              {cartItems.reduce((acc, item) => (acc += item.qty), 0)} items
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <h3>Price in Total</h3>
-            </ListGroup.Item>
-            <ListGroup.Item as="h4" style={{ color: 'red' }}>
-              $
-              {cartItems
-                .reduce((acc, item) => (acc += item.price * item.qty), 0)
-                .toFixed(2)}
-            </ListGroup.Item>
-            <Button
-              onClick={checkoutHandler}
-              className="cart-btn"
-              variant="danger"
-            >
-              CHECKOUT
-            </Button>
+          <Col
+            xs={8}
+            sm={8}
+            md={4}
+            className="text-center my-5 mt-md-0 mx-auto"
+          >
+            <Table striped bordered hover>
+              <tbody>
+                <tr>
+                  <h4 className="mb-0 text-center px-4 py-3">
+                    Amount of Items
+                  </h4>
+                </tr>
+                <tr>
+                  <p className="mb-0 text-center px-4 py-3">
+                    {cartItems.reduce((acc, item) => (acc += item.qty), 0)}{' '}
+                    items
+                  </p>
+                </tr>
+                <tr>
+                  <h4 className="mb-0 text-center px-4 py-3">Price in Total</h4>
+                </tr>
+                <tr>
+                  <p className="mb-0 text-center px-4 py-3">
+                    {' '}
+                    $
+                    {cartItems
+                      .reduce((acc, item) => (acc += item.price * item.qty), 0)
+                      .toFixed(2)}
+                  </p>
+                </tr>
+              </tbody>
+              <Button
+                onClick={checkoutHandler}
+                className="cart-btn rounded"
+                variant="warning"
+              >
+                CHECKOUT
+              </Button>
+            </Table>
           </Col>
         </Row>
       </Col>

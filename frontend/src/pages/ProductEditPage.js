@@ -9,7 +9,7 @@ import FormContainer from '../components/FormContainer'
 import { detailProduct, updateProduct } from '../redux/actions/productAction'
 import { PRODUCT_UPDATE_RESET } from '../redux/constants/productConstants'
 
-const ProductEditPage = ({ match }) => {
+const ProductEditPage = ({ match, history }) => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
@@ -97,117 +97,127 @@ const ProductEditPage = ({ match }) => {
   }
 
   return (
-    <div>
-      <Link to="/admin/productlist" className="btn btn-dark my-3">
+    <div className="mb-5">
+      <button
+        onClick={() => history.goBack()}
+        className="btn btn-dark rounded mt-3"
+      >
         Go Back
-      </Link>
+      </button>
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1 className="my-5">Edit Product</h1>
         {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="price" className="mb-3">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="image" className="mb-3">
-            <Form.Label>Image</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter image"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-            ></Form.Control>
-            <Form.Group controlId="formFileSm" className="mb-3">
+        {loading ? (
+          <Loader />
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="name" className="mb-3">
+              <Form.Label>Name</Form.Label>
               <Form.Control
-                type="file"
-                size="sm"
-                onChange={uploadFileHandler}
-              />
+                type="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
             </Form.Group>
-            {uploading && <Loader />}
-          </Form.Group>
 
-          <Form.Group controlId="brand" className="mb-3">
-            <Form.Label>Brand</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter brand"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="price" className="mb-3">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="category" className="mb-3">
-            <Form.Label>Category</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="image" className="mb-3">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Group controlId="formFileSm" className="mb-3">
+                <Form.Control
+                  type="file"
+                  size="sm"
+                  onChange={uploadFileHandler}
+                />
+              </Form.Group>
+              {uploading && <Loader />}
+            </Form.Group>
 
-          <Form.Group controlId="rating" className="mb-3">
-            <Form.Label>Rating</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter rating"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="brand" className="mb-3">
+              <Form.Label>Brand</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="countInStock" className="mb-3">
-            <Form.Label>CountInStock</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter count in stock"
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="category" className="mb-3">
+              <Form.Label>Category</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="description" className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="textarea"
-              placeholder="Enter description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="rating" className="mb-3">
+              <Form.Label>Rating</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter rating"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Row className="m10">
-            <Col md={3} className="m10">
-              <Button type="submit" variant="info" className="m10">
-                Update
-              </Button>
-            </Col>
-            <Col md={9} className="m10">
-              {updateSuccess && (
-                <Message variant="info">Update Successfully</Message>
-              )}
-              {updateError && <Message variant="danger">Update Fail</Message>}
-            </Col>
-          </Row>
-        </Form>
+            <Form.Group controlId="countInStock" className="mb-3">
+              <Form.Label>CountInStock</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter count in stock"
+                value={countInStock}
+                onChange={(e) => setCountInStock(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="description" className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="textarea"
+                placeholder="Enter description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Row>
+              <Col md={9}>
+                {updateSuccess && (
+                  <Message variant="info">Update Successfully</Message>
+                )}
+                {updateError && <Message variant="danger">Update Fail</Message>}
+              </Col>
+              <Col md={3}>
+                <Button
+                  type="submit"
+                  variant="info"
+                  className="float-right rounded"
+                >
+                  Update
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        )}
       </FormContainer>
     </div>
   )

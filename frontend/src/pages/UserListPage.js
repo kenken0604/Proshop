@@ -34,8 +34,8 @@ const UserListPage = ({ history, match }) => {
   }
 
   return (
-    <div>
-      <h2 className="mt-2">Users List</h2>
+    <div className="mb-5">
+      <h2 className="my-5">User List</h2>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -72,13 +72,13 @@ const UserListPage = ({ history, match }) => {
                   </td>
                   <td>
                     <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                      <Button variant="outline-info" className="btn-sm">
+                      <Button variant="info" className="btn-sm rounded">
                         <i className="fas fa-edit"></i>
                       </Button>
                     </LinkContainer>
                     <Button
-                      variant="outline-danger"
-                      className="btn-sm ml-2"
+                      variant="danger"
+                      className="btn-sm rounded mt-2 mt-lg-0 ml-0 ml-lg-2"
                       onClick={() => deleteHandler(user._id)}
                     >
                       <i className="fas fa-trash"></i>
@@ -87,8 +87,10 @@ const UserListPage = ({ history, match }) => {
                 </tr>
               ))}
             </tbody>
+            <div className="mt-3">
+              <Paginate page={page} pages={pages} users={true} />
+            </div>
           </Table>
-          <Paginate page={page} pages={pages} users={true} />
         </>
       )}
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -9,6 +9,8 @@ import { adminUpdateUser, getUserDetails } from '../redux/actions/userAction'
 import { USER_UPDATE_ADMIN_RESET } from '../redux/constants/userConstants'
 
 const UserEditPage = ({ match }) => {
+  const history = useHistory()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setisAdmin] = useState(false)
@@ -42,48 +44,58 @@ const UserEditPage = ({ match }) => {
 
   return (
     <div>
-      <Link to="/admin/userlist" className="btn btn-dark my-3">
+      <button
+        onClick={() => history.goBack()}
+        className="btn btn-dark rounded mt-3"
+      >
         Go Back
-      </Link>
+      </button>
       <FormContainer>
-        <h1>Edit User</h1>
+        <h1 className="my-5">Edit User</h1>
         {successUpdate && <Message>Update Successfully</Message>}
         {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name" className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="name" className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="email" className="mb-3">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="isAdmin" className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label="Is Admin"
-              checked={isAdmin}
-              onChange={(e) => setisAdmin(e.target.checked)}
-            ></Form.Check>
-          </Form.Group>
+            <Form.Group controlId="isAdmin" className="mb-3">
+              <Form.Check
+                type="checkbox"
+                label="Is Admin"
+                checked={isAdmin}
+                onChange={(e) => setisAdmin(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>
 
-          <Button type="submit" variant="info">
-            Update
-          </Button>
-        </Form>
+            <Button
+              type="submit"
+              variant="info"
+              className="float-right rounded"
+            >
+              Update
+            </Button>
+          </Form>
+        )}
       </FormContainer>
     </div>
   )

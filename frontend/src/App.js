@@ -19,6 +19,7 @@ import ProductListPage from './pages/ProductListPage'
 import ProductEditPage from './pages/ProductEditPage'
 import OrderListPage from './pages/OrderListPage'
 import ScrollToTop from './components/ScrollToTop'
+import MyOrdersPage from './pages/MyOrdersPage'
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/payment" component={PaymentPage} />
           <Route path="/placeorder" component={PlaceOrderPage} />
           <Route path="/order/:id" component={OrderPage} />
+          <Route path="/myorders" component={MyOrdersPage} />
           <Route
             path="/admin/userlist/:pageNumber?"
             component={UserListPage}

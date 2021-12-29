@@ -21,8 +21,8 @@ const OrderListPage = ({ history }) => {
   }, [dispatch, history, userInfo])
 
   return (
-    <div>
-      <h2 className="mt-2">Order List</h2>
+    <div className="mb-5">
+      <h2 className="my-5">Order List</h2>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -66,7 +66,7 @@ const OrderListPage = ({ history }) => {
                 </td>
                 <td>
                   <LinkContainer to={`/order/${order._id}`}>
-                    <Button className="btn-sm ml-2">Details</Button>
+                    <Button className="rounded btn-sm ml-2">Details</Button>
                   </LinkContainer>
                 </td>
               </tr>

@@ -62,13 +62,15 @@ const ProductPage = ({ history, match }) => {
   }
   return (
     <div>
-      <Link className="btn btn-dark rounded" to="/">
+      <Link className="btn btn-dark rounded my-4" to="/">
         Go Back
       </Link>
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <div className="my-3">
+          <Message variant="danger">{error}</Message>
+        </div>
       ) : (
         <>
           <Meta title={product.name} />
@@ -77,14 +79,18 @@ const ProductPage = ({ history, match }) => {
               <Image src={product.image} fluid />
             </Col>
             <Col md={3} className="my-4">
-              <ListGroup as="h4">{product.name}</ListGroup>
-              <ListGroup className="my-4">
+              <ListGroup as="h4" className="text-center">
+                {product.name}
+              </ListGroup>
+              <ListGroup className="my-4 text-right d-block">
                 <p>
                   <Rating value={product.rating} />
                   <small>from {product.numReviews} reviews</small>
                 </p>
               </ListGroup>
-              <ListGroup as="p">{product.description}</ListGroup>
+              <ListGroup as="p" className="d-block">
+                {product.description}
+              </ListGroup>
             </Col>
             <Col md={3}>
               <ListGroup.Item>
@@ -131,14 +137,14 @@ const ProductPage = ({ history, match }) => {
               <Button
                 onClick={addToCartHandler}
                 disabled={product.countInStock === 0}
-                className="cart-btn"
+                className="cart-btn rounded"
                 variant="danger"
               >
                 ADD TO CART
               </Button>
             </Col>
           </Row>
-          <Row className="my-3">
+          <Row className="my-5">
             <Col md={6}>
               <h4>Reviews</h4>
               {product.reviews.length === 0 && (
@@ -158,11 +164,11 @@ const ProductPage = ({ history, match }) => {
                 ))}
               </ListGroup>
             </Col>
-            <Col md={6}>
+            <Col md={6} className="my-5 my-md-0">
               <h4>write a customer review</h4>
               {reviewError && <Message variant="danger">{reviewError}</Message>}
               {userInfo ? (
-                <Form onSubmit={submitHandler}>
+                <Form onSubmit={submitHandler} className="my-3">
                   <Form.Group controlId="rating" className="mb-3">
                     <Form.Label as="h6">Rating</Form.Label>
                     <Form.Control
@@ -187,7 +193,11 @@ const ProductPage = ({ history, match }) => {
                       onChange={(e) => setComment(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
-                  <Button type="submit" variant="info">
+                  <Button
+                    type="submit"
+                    variant="info"
+                    className="float-right rounded"
+                  >
                     Submit
                   </Button>
                 </Form>

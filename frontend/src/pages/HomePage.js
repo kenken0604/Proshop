@@ -46,7 +46,7 @@ const HomePage = ({ match }) => {
   }, [dispatch, keyword, pageNumber]) //*派發指令或關鍵字改變就渲染頁面
 
   return (
-    <div>
+    <div className="mt-5">
       <Meta />
       {!keyword ? (
         <ProductCarousel />
@@ -55,21 +55,32 @@ const HomePage = ({ match }) => {
           Go Back
         </Link>
       )}
-      <h1>Latest Products</h1>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <h1 className="text-center">Latest Products</h1>
           <Row>
             {products.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Col
+                key={product._id}
+                xs={10}
+                sm={8}
+                md={6}
+                lg={4}
+                xl={3}
+                className="mx-auto"
+              >
                 <Product product={product} />
               </Col>
             ))}
           </Row>
-          <Paginate page={page} pages={pages} keyword={keyword} />
+          <div className="d-flex justify-content-center">
+            <Paginate page={page} pages={pages} keyword={keyword} />
+          </div>
         </>
       )}
     </div>

@@ -20,7 +20,7 @@ const LoginPage = ({ location, history }) => {
   useEffect(() => {
     if (userInfo) {
       history.push(redirect) //*
-      console.log(redirect)
+      // console.log(redirect)
     }
   }, [history, userInfo, redirect])
 
@@ -31,7 +31,7 @@ const LoginPage = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1 className="my-5">Sign In</h1>
       {error && <Message variant="danger">{error}</Message>}
       {loading ? (
         <Loader />
@@ -54,21 +54,24 @@ const LoginPage = ({ location, history }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
+            <p className="text-right">
+              New Customer?{' '}
+              <Link
+                to={redirect ? `/register?redirect=${redirect}` : '/register'}
+              >
+                Register
+              </Link>
+            </p>
           </Form.Group>
-          <Button type="submit" variant="primary">
+          <Button
+            type="submit"
+            variant="success"
+            className="rounded float-right"
+          >
             Sign In
           </Button>
         </Form>
       )}
-
-      <Row className="py-3">
-        <Col>
-          New Customer?{' '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
-          </Link>
-        </Col>
-      </Row>
     </FormContainer>
   )
 }

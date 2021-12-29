@@ -40,7 +40,7 @@ const RegisterPage = ({ location, history }) => {
 
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h1 className="my-5">Sign Up</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading ? (
@@ -78,25 +78,26 @@ const RegisterPage = ({ location, history }) => {
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter to confirm Password"
+              placeholder="Enter to confirm password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Form.Control>
+            <p className="text-right">
+              Have an account?{' '}
+              <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                Login
+              </Link>
+            </p>
           </Form.Group>
-          <Button type="submit" variant="primary">
+          <Button
+            type="submit"
+            variant="success"
+            className="float-right rounded mb-5"
+          >
             Register
           </Button>
         </Form>
       )}
-
-      <Row className="py-3">
-        <Col>
-          Have an Account?{' '}
-          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-            Login
-          </Link>
-        </Col>
-      </Row>
     </FormContainer>
   )
 }

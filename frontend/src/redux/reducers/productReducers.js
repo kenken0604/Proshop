@@ -76,7 +76,10 @@ export const productDeleteReducer = (state = {}, action) => {
   }
 }
 
-export const productCreateReducer = (state = {}, action) => {
+export const productCreateReducer = (
+  state = { createdProduct: null },
+  action,
+) => {
   const { type, payload } = action //傳入動作類型
   switch (type) {
     case PRODUCT_CREATE_REQUEST:
