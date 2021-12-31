@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Meta from '../components/MetaHelmet'
+import { addToCart, calltoBounce } from '../redux/actions/cartAction'
 
-const ProductPage = ({ history, match }) => {
+const ProductPage = ({ match }) => {
   // const [product, setProduct] = useState({})
   // useEffect(() => {
   //   const fetchData = () => {
@@ -27,18 +28,19 @@ const ProductPage = ({ history, match }) => {
   const [quantity, setQuantity] = useState(1)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [opacity, setOpacity] = useState(0)
 
   const dispatch = useDispatch()
+  const iconRef = useRef()
 
+  const { userInfo } = useSelector((state) => state.userLogin)
   const { loading, product, error } = useSelector(
     (state) => state.productDetail,
   )
-
-  // console.log(product)
-  const { userInfo } = useSelector((state) => state.userLogin)
   const { reviewSuccess, reviewError } = useSelector(
     (state) => state.reviewCreate,
   )
+  const { position } = useSelector((state) => state.badgePosition)
 
   useEffect(() => {
     dispatch(detailProduct(match.params.id))
@@ -54,8 +56,52 @@ const ProductPage = ({ history, match }) => {
   }, [dispatch, match, reviewSuccess])
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${quantity}`)
+    dispatch(addToCart(match.params.id, Number(quantity)))
+    // history.push(`/cart/${match.params.id}?qty=${quantity}`)
+    const iconTop = iconRef.current.getBoundingClientRect().top
+    const iconLeft = iconRef.current.getBoundingClientRect().left
+    setOpacity(0.9)
+
+    iconRef.current.style.transform = `translate(-${
+      iconLeft - position.bLeft
+    }px, -${iconTop - position.bTop}px)`
+
+    iconRef.current.style.transition =
+      'transform 2s cubic-bezier(0,0,.55,-0.08)'
+
+    let isStart
+
+    isStart = true
+
+    if (isStart) {
+      setOpacity(0.9)
+
+      iconRef.current.style.transform = `translate(-${
+        iconLeft - position.bLeft
+      }px, -${iconTop - position.bTop}px) scale(0.5)`
+
+      iconRef.current.style.transition =
+        'transform 0.8s cubic-bezier(0,0,.55,-0.08)'
+    }
+
+    setTimeout(() => {
+      isStart = false
+
+      if (!isStart) {
+        setOpacity(0)
+
+        iconRef.current.style.top = '40%'
+        iconRef.current.style.left = '50%'
+        iconRef.current.style.transform = 'translate(-50%) scale(1)'
+
+        iconRef.current.style.transition =
+          'transform 0.001s cubic-bezier(0,0,.55,-0.08)'
+
+        dispatch(calltoBounce(true))
+      }
+    }, 850)
   }
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(createReview(match.params.id, { rating, comment }))
@@ -115,7 +161,7 @@ const ProductPage = ({ history, match }) => {
                 <ListGroup.Item>
                   <Row className="text-center">
                     <Col>Quantity:</Col>
-                    <Col>
+                    <Col xs={6} md={10} lg={6}>
                       <select
                         onChange={(e) => {
                           setQuantity(e.target.value)
@@ -134,6 +180,12 @@ const ProductPage = ({ history, match }) => {
                   </Row>
                 </ListGroup.Item>
               )}
+              <Image
+                ref={iconRef}
+                src={product.image}
+                className="productIcon"
+                style={{ opacity }}
+              />
               <Button
                 onClick={addToCartHandler}
                 disabled={product.countInStock === 0}

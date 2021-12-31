@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Route } from 'react-router-dom' //*將searchbox轉成路由組件
 import { useHistory } from 'react-router'
 import { Container, Navbar, Nav, NavDropdown, Badge } from 'react-bootstrap'
@@ -7,11 +7,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/actions/userAction'
 import { USER_REGISTER_RESET } from '../redux/constants/userConstants'
 import SearchBox from './SearchBox'
+import { sendRefInfo } from '../redux/actions/cartAction'
+import { CALL_BOUNCE_RESET } from '../redux/constants/cartConstants'
 
 const Header = () => {
   const dispatch = useDispatch()
 
   const { userInfo } = useSelector((state) => state.userLogin)
+  const { cartItems } = useSelector((state) => state.cart)
+  const { toBounce } = useSelector((state) => state.bounceCall)
 
   const history = useHistory()
   const logoutHandler = () => {
@@ -19,6 +23,25 @@ const Header = () => {
     dispatch({ type: USER_REGISTER_RESET }) //*解決無法重複註冊的問題
     history.push('/')
   }
+
+  const totalItems = cartItems.reduce((acc, item) => (acc += item.qty), 0)
+
+  const badgeRef = useRef()
+
+  useEffect(() => {
+    const bTop = badgeRef.current.getBoundingClientRect().top
+    const bLeft = badgeRef.current.getBoundingClientRect().left
+    const position = { bTop, bLeft }
+    dispatch(sendRefInfo(position))
+  }, [dispatch])
+
+  useEffect(() => {
+    if (toBounce) {
+      setTimeout(() => {
+        dispatch({ type: CALL_BOUNCE_RESET })
+      }, 600)
+    }
+  }, [dispatch, toBounce])
 
   return (
     <header>
@@ -34,12 +57,21 @@ const Header = () => {
             className="d-flex justify-content-between"
           >
             <Nav>
-              <LinkContainer to="/cart">
+              <LinkContainer to="/cart" className="position-relative">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart{' '}
-                  <Badge pill bg="danger">
-                    <p className="mtb">1</p>
-                  </Badge>
+                  {totalItems > 0 && (
+                    <Badge
+                      ref={badgeRef}
+                      pill
+                      bg="danger"
+                      className={`position-absolute placement ${
+                        toBounce ? 'bounce' : ''
+                      }`}
+                    >
+                      <p className="mtb">{totalItems}</p>
+                    </Badge>
+                  )}
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (

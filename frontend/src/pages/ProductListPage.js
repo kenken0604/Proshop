@@ -22,7 +22,7 @@ const ProductListPage = ({ history, match }) => {
   const { successDelete, errorDelete } = useSelector(
     (state) => state.productDelete,
   ) //得到successDelete就渲染畫面
-  const { successCreate, errorCreate, createdProduct } = useSelector(
+  const { errorCreate, createdProduct } = useSelector(
     (state) => state.productCreate,
   ) //得到successCreate就渲染畫面
 

@@ -12,7 +12,11 @@ import {
   getTopReducer,
 } from './reducers/productReducers'
 
-import { cartReducer } from './reducers/cartReducers'
+import {
+  badgePositionReducer,
+  bounceCallReducer,
+  cartReducer,
+} from './reducers/cartReducers'
 import {
   userLoginReducer,
   userRegisterReducer,
@@ -54,6 +58,8 @@ const allReducer = combineReducers({
   productUpdate: productUpdateReducer,
   reviewCreate: reviewCreateReducer,
   getTop: getTopReducer,
+  badgePosition: badgePositionReducer,
+  bounceCall: bounceCallReducer,
 })
 
 //取得初本地儲存的狀態

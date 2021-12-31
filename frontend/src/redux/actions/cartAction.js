@@ -3,6 +3,8 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_ADDRESS,
   CART_SET_METHOD,
+  BADGE_GET_POSITION,
+  CALL_TO_BOUNCE,
 } from '../constants/cartConstants'
 
 import axios from 'axios'
@@ -64,4 +66,12 @@ export const setPayment = (method) => {
 
     localStorage.setItem('paymentMethod', method)
   }
+}
+
+export const sendRefInfo = (position) => {
+  return { type: BADGE_GET_POSITION, payload: position }
+}
+
+export const calltoBounce = (signal) => {
+  return { type: CALL_TO_BOUNCE, payload: signal }
 }

@@ -3,6 +3,9 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_ADDRESS,
   CART_SET_METHOD,
+  BADGE_GET_POSITION,
+  CALL_TO_BOUNCE,
+  CALL_BOUNCE_RESET,
 } from '../constants/cartConstants'
 
 export const cartReducer = (
@@ -40,6 +43,28 @@ export const cartReducer = (
       }
     case CART_SET_METHOD:
       return { ...state, paymentMethod: payload }
+    default:
+      return state
+  }
+}
+
+export const badgePositionReducer = (state = {}, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case BADGE_GET_POSITION:
+      return { position: payload }
+    default:
+      return state
+  }
+}
+
+export const bounceCallReducer = (state = { toBounce: false }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case CALL_TO_BOUNCE:
+      return { toBounce: payload }
+    case CALL_BOUNCE_RESET:
+      return { toBounce: false }
     default:
       return state
   }

@@ -128,14 +128,14 @@ const CartPage = ({ match, location, history }) => {
                   </p>
                 </tr>
               </tbody>
-              <Button
-                onClick={checkoutHandler}
-                className="cart-btn rounded"
-                variant="warning"
-              >
-                CHECKOUT
-              </Button>
             </Table>
+            <Button
+              onClick={checkoutHandler}
+              className="btn-block rounded"
+              variant="warning"
+            >
+              CHECKOUT
+            </Button>
           </Col>
         </Row>
       </Col>

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col, Table } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { update, getUserDetails, logout } from '../redux/actions/userAction'
-import { myOrderList } from '../redux/actions/orderAction'
 
 const ProfilePage = ({ history }) => {
   const [name, setName] = useState('')
@@ -31,7 +29,7 @@ const ProfilePage = ({ history }) => {
         setEmail(user.email)
       }
     }
-  }, [dispatch, userInfo, user]) //獲得user就會再渲染畫面
+  }, [dispatch, history, userInfo, user]) //獲得user就會再渲染畫面
 
   const submitHandler = (e) => {
     e.preventDefault()
