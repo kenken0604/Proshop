@@ -118,6 +118,10 @@ h3 {
   height: 30px !important;
 }
 
+.line-height-1 {
+  line-height: 34px;
+}
+
 /* carousel */
 .bg-light {
   border: 0;

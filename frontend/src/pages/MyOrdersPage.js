@@ -53,10 +53,12 @@ const MyOrdersPage = () => {
               ) : (
                 orderItem.map((item) => (
                   <tr key={item._id}>
-                    <td>{item._id}</td>
-                    <td>{item.createdAt.slice(1, 10)}</td>
-                    <td>${item.totalPrice}</td>
-                    <td>
+                    <td className="line-height-1">{item._id}</td>
+                    <td className="line-height-1">
+                      {item.createdAt.slice(1, 10)}
+                    </td>
+                    <td className="line-height-1">${item.totalPrice}</td>
+                    <td className="line-height-1">
                       {item.isPaid ? (
                         item.paidAt.slice(1, 10)
                       ) : (
@@ -66,7 +68,7 @@ const MyOrdersPage = () => {
                         ></i>
                       )}
                     </td>
-                    <td>
+                    <td className="line-height-1">
                       {item.isDelivered ? (
                         item.deliveredAt.slice(1, 10)
                       ) : (

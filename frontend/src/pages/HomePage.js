@@ -49,7 +49,7 @@ const HomePage = ({ match }) => {
     <div className="mt-5">
       <Meta />
       {!keyword ? (
-        <ProductCarousel />
+        ''
       ) : (
         <Link to="/" className="btn btn-dark mb-3">
           Go Back

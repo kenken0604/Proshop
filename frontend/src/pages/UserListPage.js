@@ -55,12 +55,12 @@ const UserListPage = ({ history, match }) => {
             <tbody>
               {users.map((user) => (
                 <tr key={user._id} className="text-center">
-                  <td>{user._id}</td>
-                  <td>{user.name}</td>
-                  <td>
+                  <td className="line-height-1">{user._id}</td>
+                  <td className="line-height-1">{user.name}</td>
+                  <td className="line-height-1">
                     <a href={`mailto:${user.name}`}>{user.email}</a>
                   </td>
-                  <td>
+                  <td className="line-height-1">
                     {user.isAdmin ? (
                       <i
                         className="fas fa-check"

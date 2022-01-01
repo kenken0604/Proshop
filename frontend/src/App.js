@@ -20,6 +20,7 @@ import ProductEditPage from './pages/ProductEditPage'
 import OrderListPage from './pages/OrderListPage'
 import ScrollToTop from './components/ScrollToTop'
 import MyOrdersPage from './pages/MyOrdersPage'
+import ProductCarousel from './components/ProductCarousel'
 
 const App = () => {
   return (
@@ -52,7 +53,9 @@ const App = () => {
           <Route path="/admin/product/:id/edit" component={ProductEditPage} />
           <Route path="/admin/orderlist" component={OrderListPage} />
           <Route path="/search/:keyword" component={HomePage} exact />
-          <Route path="/page/:pageNumber" component={HomePage} exact />
+          {<ProductCarousel /> && (
+            <Route path="/page/:pageNumber" component={HomePage} exact />
+          )}
           <Route
             path="/search/:keyword/page/:pageNumber"
             component={HomePage}

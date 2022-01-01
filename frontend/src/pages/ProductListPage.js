@@ -90,10 +90,10 @@ const ProductListPage = ({ history, match }) => {
             <tbody>
               {products.map((product) => (
                 <tr key={product._id} className="text-center">
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.brand}</td>
+                  <td className="line-height-1">{product._id}</td>
+                  <td className="line-height-1">{product.name}</td>
+                  <td className="line-height-1">${product.price}</td>
+                  <td className="line-height-1">{product.brand}</td>
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button variant="info" className="btn-sm rounded">

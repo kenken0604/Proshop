@@ -43,18 +43,20 @@ const OrderListPage = ({ history }) => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id} className="text-center">
-                <td>{order._id}</td>
-                <td>{order.user.name}</td>
-                <td>${order.totalPrice}</td>
-                <td>{order.createdAt.slice(0, 10)}</td>
-                <td>
+                <td className="line-height-1">{order._id}</td>
+                <td className="line-height-1">{order.user.name}</td>
+                <td className="line-height-1">${order.totalPrice}</td>
+                <td className="line-height-1">
+                  {order.createdAt.slice(0, 10)}
+                </td>
+                <td className="line-height-1">
                   {order.isPaid ? (
                     order.paidAt.slice(0, 10)
                   ) : (
                     <i className="fas fa-times" style={{ color: 'red' }}></i>
                   )}
                 </td>
-                <td>
+                <td className="line-height-1">
                   {order.isDelivered ? (
                     <i
                       className="fas fa-check"

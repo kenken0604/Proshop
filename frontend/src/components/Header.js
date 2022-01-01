@@ -44,7 +44,7 @@ const Header = () => {
   }, [dispatch, toBounce])
 
   return (
-    <header>
+    <header className="sticky-top">
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
