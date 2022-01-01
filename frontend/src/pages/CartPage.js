@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Button, Image } from 'react-bootstrap'
-import { addToCart, removeFromCart } from '../redux/actions/cartAction'
+import {
+  addToCart,
+  removeFromCart,
+  setProductQTY,
+} from '../redux/actions/cartAction'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 
@@ -30,6 +34,8 @@ const CartPage = ({ match, location, history }) => {
   }
 
   const checkoutHandler = () => {
+    if (cartItems.length === 0) return
+
     history.push('/login?redirect=shipping')
   }
 
@@ -66,11 +72,14 @@ const CartPage = ({ match, location, history }) => {
                       <Col xs={4} md={2} className="mt-3 mt-md-0">
                         <select
                           value={item.qty}
-                          onChange={(e) => {
+                          onChange={(e) =>
                             dispatch(
-                              addToCart(item.productID, Number(e.target.value)),
+                              setProductQTY(
+                                item.productID,
+                                Number(e.target.value),
+                              ),
                             )
-                          }}
+                          }
                           className="w-100 select"
                         >
                           {[...Array(item.countInStock).keys()].map((count) => (

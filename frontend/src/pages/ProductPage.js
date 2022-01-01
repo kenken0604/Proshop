@@ -58,6 +58,7 @@ const ProductPage = ({ match }) => {
   const addToCartHandler = () => {
     dispatch(addToCart(match.params.id, Number(quantity)))
     // history.push(`/cart/${match.params.id}?qty=${quantity}`)
+
     const iconTop = iconRef.current.getBoundingClientRect().top
     const iconLeft = iconRef.current.getBoundingClientRect().left
     setOpacity(0.9)

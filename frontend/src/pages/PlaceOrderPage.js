@@ -7,6 +7,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { createOrder } from '../redux/actions/orderAction'
+import { clearCart } from '../redux/actions/cartAction'
+import { ORDER_CREATE_RESET } from '../redux/constants/orderConstants'
 
 const PlaceOrderPage = ({ history }) => {
   const { userAddress, paymentMethod, cartItems } = useSelector(
@@ -39,6 +41,7 @@ const PlaceOrderPage = ({ history }) => {
         totalPrice: total,
       }),
     )
+    setTimeout(dispatch(clearCart()), 100)
   }
 
   const { order, success, error, loading } = useSelector(
@@ -48,9 +51,10 @@ const PlaceOrderPage = ({ history }) => {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`) //_id是資料庫提供的ID
+      dispatch({ type: ORDER_CREATE_RESET })
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [dispatch, history, success])
 
   return (
     <div>

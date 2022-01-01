@@ -58,16 +58,6 @@ h3 {
   left: -13%;
 }
 
-/* 圖片模糊處理 */
-img {
-  image-rendering: -moz-crisp-edges; /* Firefox */
-  image-rendering: -o-crisp-edges; /* Opera */
-  image-rendering: -webkit-optimize-contrast; /* Safari */
-  image-rendering: optimize-contrast; /* CSS3 Proposed */
-  image-rendering: pixelated; /* CSS4 Proposed */
-  -ms-interpolation-mode: nearest-neighbor; /* IE8+ */
-}
-
 .bounce {
   animation-duration: 0.6s;
   animation-name: bounce;

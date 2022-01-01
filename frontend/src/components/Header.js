@@ -60,18 +60,16 @@ const Header = () => {
               <LinkContainer to="/cart" className="position-relative">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart{' '}
-                  {totalItems > 0 && (
-                    <Badge
-                      ref={badgeRef}
-                      pill
-                      bg="danger"
-                      className={`position-absolute placement ${
-                        toBounce ? 'bounce' : ''
-                      }`}
-                    >
-                      <p className="mtb">{totalItems}</p>
-                    </Badge>
-                  )}
+                  <Badge
+                    ref={badgeRef}
+                    pill
+                    bg="danger"
+                    className={`position-absolute placement ${
+                      totalItems > 0 ? 'visible' : 'invisible'
+                    } ${toBounce ? 'bounce' : ''}`}
+                  >
+                    <p className="mtb">{totalItems}</p>
+                  </Badge>
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (

@@ -6,6 +6,8 @@ import {
   BADGE_GET_POSITION,
   CALL_TO_BOUNCE,
   CALL_BOUNCE_RESET,
+  CART_CLEAR_ITEMS,
+  CART_SET_QTY,
 } from '../constants/cartConstants'
 
 export const cartReducer = (
@@ -25,7 +27,10 @@ export const cartReducer = (
         return {
           ...state,
           cartItems: state.cartItems.map(
-            (item) => (item.productID === existItem.productID ? newItem : item), //*找到一樣的商品，換成後來傳入的物件
+            (item) =>
+              item.productID === existItem.productID
+                ? { ...item, qty: item.qty + newItem.qty } //*找到一樣的商品，但只有數量要相加
+                : item, //*其餘物件維持
           ),
         }
       } else {
@@ -35,6 +40,21 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: state.cartItems.filter((item) => item.productID !== payload),
+      }
+    case CART_SET_QTY:
+      return {
+        ...state,
+        cartItems: state.cartItems.map(
+          (item) =>
+            item.productID === payload.productID
+              ? { ...item, qty: payload.qty } //*找到一樣的商品，但只有數量要更改
+              : item, //*其餘物件維持
+        ),
+      }
+    case CART_CLEAR_ITEMS:
+      return {
+        ...state,
+        cartItems: [],
       }
     case CART_SAVE_ADDRESS:
       return {

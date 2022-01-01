@@ -5,6 +5,8 @@ import {
   CART_SET_METHOD,
   BADGE_GET_POSITION,
   CALL_TO_BOUNCE,
+  CART_CLEAR_ITEMS,
+  CART_SET_QTY,
 } from '../constants/cartConstants'
 
 import axios from 'axios'
@@ -35,6 +37,20 @@ export const addToCart = (id, qty) => {
   }
 }
 
+export const setProductQTY = (id, qty) => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: CART_SET_QTY,
+      payload: {
+        productID: id,
+        qty,
+      },
+    })
+
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+  }
+}
+
 export const removeFromCart = (id) => {
   return (dispatch, getState) => {
     dispatch({
@@ -43,6 +59,16 @@ export const removeFromCart = (id) => {
     })
 
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+  }
+}
+
+export const clearCart = () => {
+  return (dispatch) => {
+    dispatch({
+      type: CART_CLEAR_ITEMS,
+    })
+
+    localStorage.setItem('cartItems', '')
   }
 }
 
