@@ -12,7 +12,7 @@ import Message from '../components/Message'
 import Meta from '../components/MetaHelmet'
 import { addToCart, calltoBounce } from '../redux/actions/cartAction'
 
-const ProductPage = ({ match }) => {
+const ProductPage = ({ history, match }) => {
   // const [product, setProduct] = useState({})
   // useEffect(() => {
   //   const fetchData = () => {
@@ -109,9 +109,12 @@ const ProductPage = ({ match }) => {
   }
   return (
     <div>
-      <Link className="btn btn-dark rounded my-4" to="/">
+      <button
+        onClick={() => history.goBack()}
+        className="btn btn-dark rounded mt-3"
+      >
         Go Back
-      </Link>
+      </button>
       {loading ? (
         <Loader />
       ) : error ? (

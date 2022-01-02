@@ -48,7 +48,7 @@ const HomePage = ({ match }) => {
   return (
     <div className="mt-5">
       <Meta />
-      {!keyword ? (
+      {!keyword && !loading ? (
         <ProductCarousel />
       ) : (
         <Link to="/" className="btn btn-dark mb-3">
