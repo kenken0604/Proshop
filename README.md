@@ -2,6 +2,19 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Production Deployment
+
+https://kenkenliangproshopapplication.herokuapp.com/
+
+You may login as an admin with account below,
+or create your own one as a normal user.
+
+```bash
+email: admin@example.com
+password: 123456
+```
+
+
 ## Available Scripts
 
 In the project directory, you can run:
