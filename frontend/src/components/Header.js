@@ -28,12 +28,28 @@ const Header = () => {
 
   const badgeRef = useRef()
 
+  function getBadgePosition() {
+    let bTop = badgeRef.current.getBoundingClientRect().top
+    let bLeft = badgeRef.current.getBoundingClientRect().left
+    let badgePosition = { bTop, bLeft }
+
+    return badgePosition
+  }
+
   useEffect(() => {
-    const bTop = badgeRef.current.getBoundingClientRect().top
-    const bLeft = badgeRef.current.getBoundingClientRect().left
-    const position = { bTop, bLeft }
+    let position = getBadgePosition()
     dispatch(sendRefInfo(position))
   }, [dispatch])
+
+  useEffect(() => {
+    const updateWindowSize = () => {
+      let newPosition = getBadgePosition()
+      dispatch(sendRefInfo(newPosition))
+    }
+
+    window.addEventListener('resize', updateWindowSize)
+    return () => window.removeEventListener('resize', updateWindowSize)
+  }, [window])
 
   useEffect(() => {
     if (toBounce) {
