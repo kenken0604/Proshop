@@ -78,18 +78,22 @@ const OrderPage = ({ match }) => {
     dispatch(deliverOrder(orderID))
   }
 
+  console.log(history)
+
   return loading ? (
     <Loader />
   ) : error ? (
     <Message variant="danger">{error}</Message>
   ) : (
     <div className="mt-3 mb-5">
-      <button
-        onClick={() => history.goBack()}
-        className="btn btn-dark rounded mb-5"
-      >
-        Go Back
-      </button>
+      {history.location.state.from !== '/placeorder' && (
+        <button
+          onClick={() => history.goBack()}
+          className="btn btn-dark rounded mb-5"
+        >
+          Go Back
+        </button>
+      )}
       <Row>
         <Col md={8}>
           <h3>Order ID:</h3>

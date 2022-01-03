@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
+import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import Breadcrumb from '../components/Breadcrumb'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,13 +13,32 @@ const ShippingPage = ({ history }) => {
   const [city, setCity] = useState(userAddress.city)
   const [postalCode, setPostalCode] = useState(userAddress.postalCode)
   const [country, setCountry] = useState(userAddress.country)
+  const [isValidated, setValidated] = useState(true)
 
   const dispatch = useDispatch()
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(saveShipingAddress({ address, city, postalCode, country }))
-    history.push('/payment')
+
+    if (address && city && postalCode && country) {
+      dispatch(saveShipingAddress({ address, city, postalCode, country }))
+      setValidated(true)
+
+      setTimeout(() => {
+        history.push('/payment')
+      }, 500)
+    } else {
+      setValidated(false)
+    }
+  }
+
+  const checkBlank = (e) => {
+    let text = e.target.value
+    if (!text) {
+      setValidated(false)
+    } else {
+      setValidated(true)
+    }
   }
   return (
     <>
@@ -36,6 +56,7 @@ const ShippingPage = ({ history }) => {
                 placeholder="Enter address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                onBlur={checkBlank}
               ></Form.Control>
             </Form.Group>
             <Form.Group controlId="city" className="my-3">
@@ -45,6 +66,7 @@ const ShippingPage = ({ history }) => {
                 placeholder="Enter city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
+                onBlur={checkBlank}
               ></Form.Control>
             </Form.Group>
             <Form.Group controlId="postalCode" className="my-3">
@@ -54,6 +76,7 @@ const ShippingPage = ({ history }) => {
                 placeholder="Enter Postal Code"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value)}
+                onBlur={checkBlank}
               ></Form.Control>
             </Form.Group>
             <Form.Group controlId="country" className="my-3">
@@ -63,15 +86,28 @@ const ShippingPage = ({ history }) => {
                 placeholder="Enter country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
+                onBlur={checkBlank}
               ></Form.Control>
             </Form.Group>
-            <Button
-              type="submit"
-              variant="success"
-              className="float-right rounded"
-            >
-              Continue
-            </Button>
+
+            <Row>
+              <Col md={9}>
+                {!isValidated && (
+                  <div className="mr-2">
+                    <Message variant="danger">Please fill in the blank</Message>
+                  </div>
+                )}
+              </Col>
+              <Col md={3}>
+                <Button
+                  type="submit"
+                  variant="success"
+                  className="float-right rounded"
+                >
+                  Continue
+                </Button>
+              </Col>
+            </Row>
           </Form>
         </FormContainer>
       </div>

@@ -50,7 +50,7 @@ const PlaceOrderPage = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`) //_id是資料庫提供的ID
+      history.push(`/order/${order._id}`, { from: '/placeorder' }) //_id是資料庫提供的ID
       dispatch({ type: ORDER_CREATE_RESET })
     }
     // eslint-disable-next-line
@@ -160,7 +160,11 @@ const PlaceOrderPage = ({ history }) => {
             >
               Place Order
             </Button>
-            {error && <Message variant="danger">{error}</Message>}
+            {error && (
+              <div className="mt-3 text-center">
+                <Message variant="danger">Your cart is empty...</Message>
+              </div>
+            )}
           </Col>
         </Row>
       )}

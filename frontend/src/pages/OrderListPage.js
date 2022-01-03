@@ -67,7 +67,12 @@ const OrderListPage = ({ history }) => {
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/order/${order._id}`}>
+                  <LinkContainer
+                    to={{
+                      pathname: `/order/${order._id}`,
+                      state: { from: '/admin/orderlist' },
+                    }}
+                  >
                     <Button className="rounded btn-sm ml-2">Details</Button>
                   </LinkContainer>
                 </td>

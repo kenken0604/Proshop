@@ -121,7 +121,9 @@ const CartPage = ({ match, location, history }) => {
                 <tr>
                   <p className="mb-0 text-center px-4 py-3">
                     {cartItems.reduce((acc, item) => (acc += item.qty), 0)}{' '}
-                    {cartItems.length > 1 ? 'items' : 'item'}
+                    {cartItems.length > 1 || cartItems[0]?.qty > 1
+                      ? 'items'
+                      : 'item'}
                   </p>
                 </tr>
                 <tr>

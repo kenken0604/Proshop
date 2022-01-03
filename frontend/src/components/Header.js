@@ -49,7 +49,7 @@ const Header = () => {
 
     window.addEventListener('resize', updateWindowSize)
     return () => window.removeEventListener('resize', updateWindowSize)
-  }, [window])
+  }, [dispatch])
 
   useEffect(() => {
     if (toBounce) {

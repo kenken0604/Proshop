@@ -79,7 +79,12 @@ const MyOrdersPage = () => {
                       )}
                     </td>
                     <td>
-                      <LinkContainer to={`/order/${item._id}`}>
+                      <LinkContainer
+                        to={{
+                          pathname: `/order/${item._id}`,
+                          state: { from: '/myorders' },
+                        }}
+                      >
                         <Button variant="dark" className="btn-sm rounded">
                           Details
                         </Button>
