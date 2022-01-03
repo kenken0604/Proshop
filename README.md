@@ -28,10 +28,11 @@ password: 123456
 9. Check profile details or update
 
 - As an admin
-1. Check all the user account and update user details or delete if in need
+1. Check all the user accounts and details, update or delete if in need
 2. Check all the room information, update or delete if in need
-3. Check all the order result and details
+3. Check all the order results and details
 4. Mark delivered status as permitted if the order get paid
+5. Upload new product and edit
 
 ## Available Scripts
 
