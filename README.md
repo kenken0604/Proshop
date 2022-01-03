@@ -14,6 +14,24 @@ email: admin@example.com
 password: 123456
 ```
 
+## Main Features
+
+- As a normal user
+1. Register and login
+2. Search product by name
+3. Add product with specific quantity into shopping cart
+4. Leave comment and rating on every product at lower part of product page
+5. Enter shopping cart to check the amount of each product, or reset, or delete
+6. Submit order after filling the information of address and paying method
+7. Pay by given payment info
+8. Check order details and paid or delivered status
+9. Check profile details or update
+
+- As an admin
+1. Check all the user account and update user details or delete if in need
+2. Check all the room information, update or delete if in need
+3. Check all the order result and details
+4. Mark delivered status as permitted if the order get paid
 
 ## Available Scripts
 
