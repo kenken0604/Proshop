@@ -63,10 +63,10 @@ Password: 123456
 
 ## 網頁效率評分
 - GTmetrix
-<img src="https://github.com/kenken0604/Bookit/blob/main/public/3.png" width="100%">
+<img src="https://github.com/kenken0604/Proshop/blob/master/frontend/public/1.png" width="100%">
 
 - PageSpeed Insights
-<img src="https://github.com/kenken0604/Bookit/blob/main/public/4.png" width="100%">
+<img src="https://github.com/kenken0604/Proshop/blob/master/frontend/public/2.png" width="100%">
 
 
 ## Production Deployment
