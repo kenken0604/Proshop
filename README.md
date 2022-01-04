@@ -2,6 +2,73 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## 專案呈現
+
+https://kenkenliangproshopapplication.herokuapp.com/
+
+用下方帳號以管理者的方式登入，或是自行建立一般使用者的帳號  
+```bash
+Email: admin@example.com
+Password: 123456
+```
+
+
+## 專案功能
+
+- 一般使用者
+1. 註冊頁與登入頁  
+   簡易註冊及登入
+2. 商品頁  
+   - 加入商品及數量到購物車  
+   - 提交評分及留言，重複評論會顯示警告
+   - 評論會儲存到資料庫，並重新計算評分顯示到畫面
+3. 購物車頁  
+   - 可以在此頁重新設定商品數量
+   - 刪除商品
+   - 將商品資料儲存在本地資料庫，因此不需要等待異步資料傳遞
+4. 寄送地址頁  
+   - 提交表單資料
+   - 將地址資料儲存在本地資料庫，讓使用者不需重複輸入
+5. 付款方式頁  
+   - 選擇付款方式
+   - 將付款方式儲存在本地資料庫，不需使用者重複更改
+6. 確認訂單頁  
+   讓使用者確認以上流程輸入的資料
+7. 結帳頁
+   - 串接Papal金流系統讓使用者付款
+   - 立即付款成功後，會在付款狀態上顯示已付款
+8. 個人訂單頁
+   - 顯示每筆訂單資料
+   - 可進入訂單資料查看內容
+9. 個人資料頁
+   - 顯示使用者的名稱及信箱
+   - 如需修改資料，可以輸入表單提交表單修改
+   - 可在此更改密碼
+10. 搜尋功能
+    搜尋商品名稱
+
+- 網站管理員
+1. 使用者管理頁
+   - 顯示所有使用者
+   - 可以進入修改頁，更改使用者的資料及身分
+   - 刪除使用者
+2. 商品清單頁  
+   - 顯示所有商品
+   - 建立新商品
+   - 進入修改表單頁，更新商品基本資料或上傳圖片
+   - 刪除飯店
+3. 訂單頁  
+   - 顯示所有訂單
+   - 可以查看訂單細節
+
+## 網頁效率評分
+- GTmetrix
+<img src="https://github.com/kenken0604/Bookit/blob/main/public/3.png" width="100%">
+
+- PageSpeed Insights
+<img src="https://github.com/kenken0604/Bookit/blob/main/public/4.png" width="100%">
+
+
 ## Production Deployment
 
 https://kenkenliangproshopapplication.herokuapp.com/
@@ -10,8 +77,8 @@ You may login as an admin with account below,
 or create your own one as a normal user.
 
 ```bash
-email: admin@example.com
-password: 123456
+Email: admin@example.com
+Password: 123456
 ```
 
 ## Main Features
